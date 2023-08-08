@@ -1,0 +1,3 @@
+".\Objects\main.obj" 
+TO ".\Objects\04舵机控制" 
+PRINT(".\Listings\04舵机控制.m51") RAMSIZE(256) 
