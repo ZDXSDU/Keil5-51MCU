@@ -1,8 +1,8 @@
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                    08/09/2023  14:03:54  PAGE 1
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                    08/09/2023  16:30:20  PAGE 1
 
 
 BL51 BANKED LINKER/LOCATER V6.22.4.0, INVOKED BY:
-D:\KEIL_V5\C51\BIN\BL51.EXE .\Objects\main.obj, .\Objects\Delay.obj, .\Objects\LCD1602.obj, .\Objects\MatrixKey.obj TO .
+D:\KEIL_V5\C51\BIN\BL51.EXE .\Objects\main.obj, .\Objects\MatrixKey.obj, .\Objects\Delay.obj, .\Objects\LCD1602.obj TO .
 >> \Objects\project PRINT (.\Listings\project.m51) RAMSIZE (256) DISABLEWARNING (16)
 
 
@@ -11,9 +11,9 @@ MEMORY MODEL: SMALL
 
 INPUT MODULES INCLUDED:
   .\Objects\main.obj (MAIN)
+  .\Objects\MatrixKey.obj (MATRIXKEY)
   .\Objects\Delay.obj (DELAY)
   .\Objects\LCD1602.obj (LCD1602)
-  .\Objects\MatrixKey.obj (MATRIXKEY)
   D:\KEIL_V5\C51\LIB\C51S.LIB (?C_STARTUP)
   D:\KEIL_V5\C51\LIB\C51S.LIB (?C?CLDOPTR)
   D:\KEIL_V5\C51\LIB\C51S.LIB (?C?IMUL)
@@ -59,7 +59,7 @@ LINK MAP OF MODULE:  .\Objects\project (MAIN)
             CODE    0488H     000AH     UNIT         ?PR?_LCD_SHOWCHAR?LCD1602
             CODE    0492H     0004H     UNIT         ?C_INITSEG
 
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  08/09/2023  14:03:54  PAGE 2
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  08/09/2023  16:30:20  PAGE 2
 
 
 
@@ -119,7 +119,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\project (MAIN)
   C:0355H         PUBLIC        main
   D:0022H         PUBLIC        num
   -------         PROC          MAIN
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  08/09/2023  14:03:54  PAGE 3
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  08/09/2023  16:30:20  PAGE 3
 
 
   C:0355H         LINE#         5
@@ -135,6 +135,54 @@ SYMBOL TABLE OF MODULE:  .\Objects\project (MAIN)
   C:0388H         LINE#         15
   -------         ENDPROC       MAIN
   -------         ENDMOD        MAIN
+
+  -------         MODULE        MATRIXKEY
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0090H         PUBLIC        P1
+  B:0090H.0       PUBLIC        P1_0
+  B:0090H.1       PUBLIC        P1_1
+  B:0090H.2       PUBLIC        P1_2
+  B:0090H.3       PUBLIC        P1_3
+  B:0090H.4       PUBLIC        P1_4
+  B:0090H.5       PUBLIC        P1_5
+  B:0090H.6       PUBLIC        P1_6
+  B:0090H.7       PUBLIC        P1_7
+  C:0003H         PUBLIC        GetMatrixKey
+  D:0023H         PUBLIC        KeyNum
+  -------         PROC          GETMATRIXKEY
+  C:0003H         LINE#         15
+  C:0003H         LINE#         16
+  C:0003H         LINE#         17
+  C:0006H         LINE#         18
+  C:0008H         LINE#         19
+  C:001FH         LINE#         20
+  C:0036H         LINE#         21
+  C:004DH         LINE#         22
+  C:0064H         LINE#         24
+  C:0067H         LINE#         25
+  C:0069H         LINE#         26
+  C:0080H         LINE#         27
+  C:0097H         LINE#         28
+  C:00AEH         LINE#         29
+  C:00C5H         LINE#         31
+  C:00C8H         LINE#         32
+  C:00CAH         LINE#         33
+  C:00E1H         LINE#         34
+  C:00F8H         LINE#         35
+  C:010FH         LINE#         36
+  C:0126H         LINE#         38
+  C:0129H         LINE#         39
+  C:012BH         LINE#         40
+  C:0142H         LINE#         41
+  C:0159H         LINE#         42
+  C:0170H         LINE#         43
+  C:0187H         LINE#         45
+  C:0189H         LINE#         46
+  -------         ENDPROC       GETMATRIXKEY
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  08/09/2023  16:30:20  PAGE 4
+
+
+  -------         ENDMOD        MATRIXKEY
 
   -------         MODULE        DELAY
   C:0000H         SYMBOL        _ICE_DUMMY_
@@ -179,9 +227,6 @@ SYMBOL TABLE OF MODULE:  .\Objects\project (MAIN)
   C:02AAH         PUBLIC        _LCD_ShowSignedNum
   C:0396H         PUBLIC        _LCD_Pow
   -------         PROC          L?0048
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  08/09/2023  14:03:54  PAGE 4
-
-
   -------         ENDPROC       L?0048
   -------         PROC          LCD_DELAY
   -------         DO            
@@ -194,6 +239,9 @@ SYMBOL TABLE OF MODULE:  .\Objects\project (MAIN)
   C:0477H         LINE#         20
   C:0479H         LINE#         22
   C:0479H         LINE#         23
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  08/09/2023  16:30:20  PAGE 5
+
+
   C:047BH         LINE#         24
   C:047DH         LINE#         25
   -------         ENDPROC       LCD_DELAY
@@ -239,9 +287,6 @@ SYMBOL TABLE OF MODULE:  .\Objects\project (MAIN)
   C:0430H         LINE#         75
   -------         ENDPROC       _LCD_SETCURSOR
   -------         PROC          LCD_INIT
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  08/09/2023  14:03:54  PAGE 5
-
-
   C:045BH         LINE#         82
   C:045BH         LINE#         83
   C:045BH         LINE#         84
@@ -254,6 +299,9 @@ SYMBOL TABLE OF MODULE:  .\Objects\project (MAIN)
   D:0005H         SYMBOL        Column
   D:0004H         SYMBOL        Char
   C:0488H         LINE#         97
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  08/09/2023  16:30:20  PAGE 6
+
+
   C:048AH         LINE#         98
   C:048AH         LINE#         99
   C:048DH         LINE#         100
@@ -299,9 +347,6 @@ SYMBOL TABLE OF MODULE:  .\Objects\project (MAIN)
   D:0007H         SYMBOL        Line
   D:0005H         SYMBOL        Column
   D:000AH         SYMBOL        Number
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  08/09/2023  14:03:54  PAGE 6
-
-
   D:000CH         SYMBOL        Length
   -------         DO            
   D:0002H         SYMBOL        i
@@ -314,6 +359,9 @@ SYMBOL TABLE OF MODULE:  .\Objects\project (MAIN)
   C:040DH         LINE#         148
   C:0417H         LINE#         149
   C:041AH         LINE#         150
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  08/09/2023  16:30:20  PAGE 7
+
+
   -------         ENDPROC       _LCD_SHOWNUM
   -------         PROC          _LCD_SHOWSIGNEDNUM
   D:0007H         SYMBOL        Line
@@ -359,9 +407,6 @@ SYMBOL TABLE OF MODULE:  .\Objects\project (MAIN)
   C:02F3H         LINE#         195
   C:0309H         LINE#         196
   C:030FH         LINE#         197
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  08/09/2023  14:03:54  PAGE 7
-
-
   C:030FH         LINE#         198
   C:0311H         LINE#         199
   C:0313H         LINE#         201
@@ -374,6 +419,9 @@ SYMBOL TABLE OF MODULE:  .\Objects\project (MAIN)
   D:0007H         SYMBOL        Line
   D:0005H         SYMBOL        Column
   D:001FH         SYMBOL        Number
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  08/09/2023  16:30:20  PAGE 8
+
+
   D:0021H         SYMBOL        Length
   -------         DO            
   D:0002H         SYMBOL        i
@@ -388,54 +436,6 @@ SYMBOL TABLE OF MODULE:  .\Objects\project (MAIN)
   C:0354H         LINE#         223
   -------         ENDPROC       _LCD_SHOWBINNUM
   -------         ENDMOD        LCD1602
-
-  -------         MODULE        MATRIXKEY
-  C:0000H         SYMBOL        _ICE_DUMMY_
-  D:0090H         PUBLIC        P1
-  B:0090H.0       PUBLIC        P1_0
-  B:0090H.1       PUBLIC        P1_1
-  B:0090H.2       PUBLIC        P1_2
-  B:0090H.3       PUBLIC        P1_3
-  B:0090H.4       PUBLIC        P1_4
-  B:0090H.5       PUBLIC        P1_5
-  B:0090H.6       PUBLIC        P1_6
-  B:0090H.7       PUBLIC        P1_7
-  C:0003H         PUBLIC        GetMatrixKey
-  D:0023H         PUBLIC        KeyNum
-  -------         PROC          GETMATRIXKEY
-  C:0003H         LINE#         15
-  C:0003H         LINE#         16
-  C:0003H         LINE#         17
-  C:0006H         LINE#         18
-  C:0008H         LINE#         19
-  C:001FH         LINE#         20
-  C:0036H         LINE#         21
-  C:004DH         LINE#         22
-  C:0064H         LINE#         24
-  C:0067H         LINE#         25
-  C:0069H         LINE#         26
-  C:0080H         LINE#         27
-  C:0097H         LINE#         28
-  C:00AEH         LINE#         29
-  C:00C5H         LINE#         31
-  C:00C8H         LINE#         32
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  08/09/2023  14:03:54  PAGE 8
-
-
-  C:00CAH         LINE#         33
-  C:00E1H         LINE#         34
-  C:00F8H         LINE#         35
-  C:010FH         LINE#         36
-  C:0126H         LINE#         38
-  C:0129H         LINE#         39
-  C:012BH         LINE#         40
-  C:0142H         LINE#         41
-  C:0159H         LINE#         42
-  C:0170H         LINE#         43
-  C:0187H         LINE#         45
-  C:0189H         LINE#         46
-  -------         ENDPROC       GETMATRIXKEY
-  -------         ENDMOD        MATRIXKEY
 
   -------         MODULE        ?C?CLDOPTR
   C:018AH         PUBLIC        ?C?CLDOPTR
