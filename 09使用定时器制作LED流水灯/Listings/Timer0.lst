@@ -1,0 +1,69 @@
+C51 COMPILER V9.60.7.0   TIMER0                                                            08/11/2023 17:04:23 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE TIMER0
+OBJECT MODULE PLACED IN .\Objects\Timer0.obj
+COMPILER INVOKED BY: D:\Keil_v5\C51\BIN\C51.EXE Timer0.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\Ti
+                    -mer0.lst) OBJECT(.\Objects\Timer0.obj)
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          /**
+   3            * @brief 定时器0的1毫秒*1000=1秒定时器通用初始化函数
+   4            * @param  无
+   5            * @retval 无
+   6            */
+   7          void Timer0_Init()
+   8          {
+   9   1              // 在不改变定时器1的前提下配置定时器0的模式寄存器TMOD（不可位寻址）
+  10   1              TMOD &= 0xF0;
+  11   1              TMOD |= 0x01;
+  12   1              // 配置定时器0的控制寄存器TCON（可位寻址）
+  13   1              TF0 = 0; // 溢出中断标志置于0，防止定时器刚一启动就中断
+  14   1              TR0 = 1; // 运行控制位，允许T0开始计数
+  15   1              // 配置定时器的初始值（高4位+低4位）
+  16   1              TH0 = 0xFC; // DEC[(65535-1000)/16^2]=>HEX 取出高位
+  17   1              TL0 = 0x18; // DEC[(65535-1000)%16^2]=>HEX 取出低位
+  18   1              // 配置中断系统的寄存器以及中断优先级
+  19   1              ET0 = 1; // 中断
+  20   1              EA = 1; // 总中断使能
+  21   1              PT0 = 0;// 优先级置于最低
+  22   1      }
+  23          /* 中断执行函数模板
+  24          
+  25          
+  26          void Timer0_Routine() interrupt 1
+  27          {
+  28                  static unsigned int T0Count; // 静态变量用于记录中断次数
+  29                  // 每一次中断都将定时器的初始值重新赋值，以保证每次都是1ms中断
+  30                  TH0 = 0xFC;
+  31                  TL0 = 0x18;
+  32                  // 每一次中断（1MS），都将T0Count计数器加一，直到加满1000MS视为一秒钟，此时�
+             -�将T0Count计数器置0
+  33                  T0Count++;
+  34                  if(T0Count > 1000)
+  35                  {
+  36                          T0Count = 0;
+  37                          
+  38                  }
+  39          }
+  40          
+  41          
+  42          */
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     23    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+C51 COMPILER V9.60.7.0   TIMER0                                                            08/11/2023 17:04:23 PAGE 2   
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

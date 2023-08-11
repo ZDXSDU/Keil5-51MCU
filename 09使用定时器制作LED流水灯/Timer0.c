@@ -34,9 +34,7 @@ void Timer0_Routine() interrupt 1
 	if(T0Count > 1000)
 	{
 		T0Count = 0;
-		/*
-		这里是中断处理程序代码区域
-		*/
+		
 	}
 }
 
