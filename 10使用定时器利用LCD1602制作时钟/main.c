@@ -9,6 +9,7 @@ void main()
 	Timer0_Init();
 	LCD_ShowString(1,1,"Elapsed time is:");
 	LCD_ShowString(2,1,"  :  :");
+	LCD_ShowString(2,11,"ZDXSDU");
 	while(1)
 	{
 		LCD_ShowNum(2,1,Time_Hou,2);
@@ -30,15 +31,15 @@ void Timer0_Routine() interrupt 1
 		Time_Sec++;
 		if(Time_Sec>=60)
 		{
-			Time_Sec=0;		//60秒到，Sec清0，Min自增
+			Time_Sec=0;
 			Time_Min++;
 			if(Time_Min>=60)
 			{
-				Time_Min=0;	//60分钟到，Min清0，Hour自增
+				Time_Min=0;
 				Time_Hou++;
 				if(Time_Hou>=24)
 				{
-					Time_Hou=0;	//24小时到，Hour清0
+					Time_Hou=0;
 				}
 			}
 		}
