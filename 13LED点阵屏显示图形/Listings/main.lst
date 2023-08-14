@@ -1,0 +1,98 @@
+C51 COMPILER V9.60.7.0   MAIN                                                              08/14/2023 14:59:12 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: D:\Keil_v5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\main
+                    -.lst) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          #define MATRIX_LED_PORT P0
+   3          sbit RCK = P3^5; // 74HC595的RCLK引脚(寄存器时钟，上升沿锁存)
+   4          sbit SCK = P3^6; // 74HC595的SRCLK引脚(串行时钟，上升沿移位)
+   5          sbit SER = P3^4; // 74HC595的SER引脚(串行数据)
+   6          void _74HC595_WriteByte(unsigned char byte);
+   7          void MatrixLEDShowColumn(unsigned char column, da);
+   8          void Delay(unsigned int xms);
+   9          void main()
+  10          {
+  11   1              RCK = 0;
+  12   1              SCK = 0;
+  13   1              while(1)
+  14   1              {
+  15   2                      MatrixLEDShowColumn(0,0x3C);
+  16   2                      MatrixLEDShowColumn(1,0x42);
+  17   2                      MatrixLEDShowColumn(2,0x95);
+  18   2                      MatrixLEDShowColumn(3,0x85);
+  19   2                      MatrixLEDShowColumn(4,0x85);
+  20   2                      MatrixLEDShowColumn(5,0x95);
+  21   2                      MatrixLEDShowColumn(6,0x42);
+  22   2                      MatrixLEDShowColumn(7,0x3C);
+  23   2              }
+  24   1      }
+  25          /**
+  26          * @brief 为74HC595写入数据(8位并锁存)
+  27          * @param byte 要写入的字节数据（8位，高位在上）
+  28          * @retval 无
+  29          */
+  30          void _74HC595_WriteByte(unsigned char byte)
+  31          {
+  32   1              unsigned char i;
+  33   1              for(i = 0; i < 8; i++) // 循环8次，拿出每一位的值给SER
+  34   1              {
+  35   2                      SER = byte & (0x80 >> i);
+  36   2                      SCK = 1;
+  37   2                      SCK = 0;
+  38   2              }
+  39   1              RCK = 1;
+  40   1              RCK = 0;
+  41   1      }
+  42          /**
+  43          * @brief 点阵屏按列显示对应的数据
+  44          * @param column 第几列（1位，范围0~7）
+  45          * @param data 要显示的数据（8位）
+  46          * @retval 无
+  47          */
+  48          void MatrixLEDShowColumn(unsigned char column, da)
+  49          {
+  50   1              _74HC595_WriteByte(da);
+  51   1              MATRIX_LED_PORT = ~ (0x80 >> column);
+  52   1              Delay(1);
+  53   1              MATRIX_LED_PORT = 0xFF;
+  54   1      }
+C51 COMPILER V9.60.7.0   MAIN                                                              08/14/2023 14:59:12 PAGE 2   
+
+  55          /**
+  56          * @brief 延时
+  57          * @param xms 毫秒
+  58          * @retval 无
+  59          */
+  60          void Delay(unsigned int xms)
+  61          {
+  62   1              unsigned char i, j;
+  63   1              while(xms--)
+  64   1              {
+  65   2                      i = 2;
+  66   2                      j = 239;
+  67   2                      do
+  68   2                      {
+  69   3                              while (--j);
+  70   3                      } while (--i);
+  71   2              }
+  72   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    178    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
