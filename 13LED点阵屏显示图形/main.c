@@ -12,14 +12,14 @@ void main()
 	SCK = 0;
 	while(1)
 	{
-		MatrixLEDShowColumn(0,0x3C);
-		MatrixLEDShowColumn(1,0x42);
-		MatrixLEDShowColumn(2,0x95);
-		MatrixLEDShowColumn(3,0x85);
-		MatrixLEDShowColumn(4,0x85);
-		MatrixLEDShowColumn(5,0x95);
-		MatrixLEDShowColumn(6,0x42);
-		MatrixLEDShowColumn(7,0x3C);
+		MatrixLEDShowColumn(0,0x00);
+		MatrixLEDShowColumn(1,0x80);
+		MatrixLEDShowColumn(2,0x88);
+		MatrixLEDShowColumn(3,0x84);
+		MatrixLEDShowColumn(4,0xFE);
+		MatrixLEDShowColumn(5,0x80);
+		MatrixLEDShowColumn(6,0x80);
+		MatrixLEDShowColumn(7,0x80);
 	}
 }
 /**
