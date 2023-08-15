@@ -1,0 +1,76 @@
+C51 COMPILER V9.60.7.0   MATRIXLED                                                         08/15/2023 08:03:02 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE MATRIXLED
+OBJECT MODULE PLACED IN .\Objects\MatrixLED.obj
+COMPILER INVOKED BY: D:\Keil_v5\C51\BIN\C51.EXE MatrixLED.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings
+                    -\MatrixLED.lst) OBJECT(.\Objects\MatrixLED.obj)
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          #include "Delay.h"
+   3          #define MATRIX_LED_PORT P0
+   4          sbit RCK = P3^5; // 74HC595的RCLK引脚(寄存器时钟，上升沿锁存)
+   5          sbit SCK = P3^6; // 74HC595的SRCLK引脚(串行时钟，上升沿移位)
+   6          sbit SER = P3^4; // 74HC595的SER引脚(串行数据)
+   7          /**
+   8          * @brief 为74HC595写入数据(8位并锁存)
+   9          * @param byte 要写入的字节数据（8位，高位在上）
+  10          * @retval 无
+  11          */
+  12          void _74HC595_WriteByte(unsigned char byte)
+  13          {
+  14   1              unsigned char i;
+  15   1              for(i = 0; i < 8; i++) // 循环8次，拿出每一位的值给SER
+  16   1              {
+  17   2                      SER = byte & (0x80 >> i);
+  18   2                      SCK = 1;
+  19   2                      SCK = 0;
+  20   2              }
+  21   1              RCK = 1;
+  22   1              RCK = 0;
+  23   1      }
+  24          /**
+  25          * @brief 点阵屏按列显示对应的数据
+  26          * @param column 第几列（1位，范围0~7）
+  27          * @param data 要显示的数据（8位）
+  28          * @retval 无
+  29          */
+  30          void MatrixLEDShowColumn(unsigned char column, da)
+  31          {
+  32   1              _74HC595_WriteByte(da);
+  33   1              MATRIX_LED_PORT = ~ (0x80 >> column);
+  34   1              Delay(1);
+  35   1              MATRIX_LED_PORT = 0xFF;
+  36   1      }
+  37          /**
+  38          * @brief 清除寄存器时钟和串行时钟的上升沿，上电初始化函数
+  39          * @param  无
+  40          * @retval 无
+  41          */
+  42          void MatrixLED_Init()
+  43          {
+  44   1              RCK = 0;
+  45   1              SCK = 0;
+  46   1      }
+  47          /*
+  48          调用时：MatrixLEDShowColumn(0,0xFF);
+  49          上电后需要先调用初始化函数，然后才能发送显示的命令
+  50          */
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     84    ----
+C51 COMPILER V9.60.7.0   MATRIXLED                                                         08/15/2023 08:03:02 PAGE 2   
+
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

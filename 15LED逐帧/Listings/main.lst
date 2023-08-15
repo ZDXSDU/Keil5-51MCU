@@ -1,0 +1,64 @@
+C51 COMPILER V9.60.7.0   MAIN                                                              08/15/2023 09:55:53 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: D:\Keil_v5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\main
+                    -.lst) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          #include "MatrixLED.H"
+   3          unsigned char animation[] = {
+   4                  0x3C,0x42,0xA9,0x85,0x85,0xA9,0x42,0x3C,
+   5                  0x3C,0x42,0xA5,0x89,0x89,0xA5,0x42,0x3C,
+   6                  0x3C,0x42,0xA1,0x89,0x89,0xA1,0x42,0x3C,
+   7                  0x70,0x88,0x84,0x42,0x42,0x84,0x88,0x70,
+   8                  0x78,0x84,0x82,0x41,0x41,0x82,0x84,0x78,
+   9                  0x78,0xFC,0xFE,0x7F,0x7F,0xFE,0xFC,0x78,
+  10                  0x00,0x00,0x00,0x18,0x18,0x00,0x00,0x00,
+  11                  0x00,0x00,0x3C,0x3C,0x3C,0x3C,0x00,0x00,
+  12                  0x00,0x7E,0x7E,0x7E,0x7E,0x7E,0x7E,0x00,
+  13                  0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,
+  14                  0x7F,0xBF,0xDF,0xEF,0xF7,0xFB,0xFD,0xFE,
+  15                  0x7E,0xBD,0xDB,0xE7,0xE7,0xDB,0xBD,0x7E,
+  16                  0x7E,0xBD,0xC3,0xC3,0xC3,0xC3,0xBD,0x7E,
+  17          };
+  18          void main()
+  19          {
+  20   1              // i:      当前屏幕中的每一列的字模
+  21   1              // offset: 屏幕的偏移量，即当前是第几屏幕
+  22   1              // count:  计次。即当前屏幕循环多少次以后开始显示下一屏
+  23   1              unsigned char i, offset = 0, count = 0; 
+  24   1              MatrixLED_Init();
+  25   1              while(1)
+  26   1              {
+  27   2                      for(i = 0; i < 8; i++)
+  28   2                      {
+  29   3                              MatrixLEDShowColumn(i, animation[i + offset]);
+  30   3                      }
+  31   2                      count++;
+  32   2                      if(count > 18)
+  33   2                      {
+  34   3                              count = 0;
+  35   3                              offset += 8;
+  36   3                              if(offset > 96)
+  37   3                                      offset = 0;                     
+  38   3                      }
+  39   2              }
+  40   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     64    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =    104       3
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
