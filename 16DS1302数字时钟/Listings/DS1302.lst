@@ -1,0 +1,102 @@
+C51 COMPILER V9.60.7.0   DS1302                                                            08/15/2023 17:06:57 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE DS1302
+OBJECT MODULE PLACED IN .\Objects\DS1302.obj
+COMPILER INVOKED BY: D:\Keil_v5\C51\BIN\C51.EXE DS1302.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\DS
+                    -1302.lst) OBJECT(.\Objects\DS1302.obj)
+
+line level    source
+
+   1          // Header: 驱动DS1302数字时钟的函数
+   2          // File Name: DS1302.c
+   3          // Author: ZDXSDU
+   4          // Date: Aug.15,2023
+   5          #include <REGX52.H>
+   6          sbit DS1302_SCLK = P3^6; // DS1302芯片的串行时钟引脚
+   7          sbit DS1302_IO = P3^4; // DS1302芯片的串行数据引脚
+   8          sbit DS1302_CE = P3^5; // DS1302芯片的芯片使能引脚（高电平有效）
+   9          /**
+  10          * @brief DS1302初始化
+  11          * @param  无
+  12          * @retval 无
+  13          * @interpretation 由于MCU上电时I/O口均为高电平，需要给DS1302的时钟和使能引脚低电�
+             -��
+  14          */
+  15          void DS1302_Init(void)
+  16          {
+  17   1              DS1302_CE = 0;
+  18   1              DS1302_SCLK = 0;
+  19   1      }
+  20          /**
+  21          * @brief 向DS1302写入数据
+  22          * @param Command：命令字
+  23          * @param Data：写入的数据字节
+  24          * @retval 无
+  25          * @interpretation 描述
+  26          */
+  27          void DS1302_WriteByte(unsigned char Command, Data)
+  28          {
+  29   1              unsigned char i;
+  30   1              DS1302_CE = 1; // 芯片使能引脚给高电平使其有效    
+  31   1              for(i = 0; i < 8; i++)
+  32   1              {
+  33   2                      DS1302_IO = Command & (0x01 << i); // 取出命令字的第i位
+  34   2                      DS1302_SCLK = 1; // 上升沿将数据写入DS1302
+  35   2                      DS1302_SCLK = 0; // 恢复串行时钟置0
+  36   2              }
+  37   1              for(i = 0; i < 8; i++)
+  38   1              {
+  39   2                      DS1302_IO = Data & (0x01 << i); // 取出Data字节的第i位
+  40   2                      DS1302_SCLK = 1; // 上升沿将数据写入DS1302
+  41   2                      DS1302_SCLK = 0; // 恢复串行时钟置0
+  42   2              }
+  43   1              DS1302_CE = 0; // 关闭芯片使能
+  44   1      }
+  45          /**
+  46          * @brief 向DS1302读取数据
+  47          * @param Command：命令字
+  48          * @retval [char]: DS1302返回的数据
+  49          * @interpretation  描述
+  50          */
+  51          unsigned char DS1302_ReadByte(unsigned char Command)
+  52          {
+  53   1              unsigned char i, Data = 0x00;
+C51 COMPILER V9.60.7.0   DS1302                                                            08/15/2023 17:06:57 PAGE 2   
+
+  54   1              DS1302_CE = 1; // 芯片使能引脚给高电平使其有效
+  55   1              for(i = 0; i < 8; i++)
+  56   1              {
+  57   2                      DS1302_IO = Command & (0x01 << i); // 取出命令字的第i位
+  58   2                      // 由于DS1302的写入和读取的时序不一样，这里需要先给0再给1
+  59   2                      DS1302_SCLK = 0; // 恢复串行时钟置0
+  60   2                      DS1302_SCLK = 1; // 上升沿将数据写入DS1302
+  61   2              }
+  62   1              for(i = 0; i < 8; i++)
+  63   1              {
+  64   2                      // 这里在取数据的时候又将时序反了过来，原因是如果先0后1会造成多给了一个
+             -脉冲周期
+  65   2                      DS1302_SCLK = 1; // 恢复串行时钟置1
+  66   2                      DS1302_SCLK = 0; // 下降沿读取DS1302的数据              
+  67   2                      if(DS1302_IO)
+  68   2                              Data |= (0x01 << i); // 如果DS1302的返回值是1，那么就将接收变量Data对应位置也变�
+             -�1
+  69   2              }
+  70   1              DS1302_CE = 0; // 关闭芯片使能
+  71   1              DS1302_IO = 0; // 将串行数据口清零，防止读出的不对
+  72   1              return Data;
+  73   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    167    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       2
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,4 +1,4 @@
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                    08/15/2023  09:55:53  PAGE 1
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                    08/15/2023  10:11:51  PAGE 1
 
 
 BL51 BANKED LINKER/LOCATER V6.22.4.0, INVOKED BY:
@@ -14,7 +14,6 @@ INPUT MODULES INCLUDED:
   .\Objects\MatrixLED.obj (MATRIXLED)
   .\Objects\Delay.obj (DELAY)
   D:\KEIL_V5\C51\LIB\C51S.LIB (?C_STARTUP)
-  D:\KEIL_V5\C51\LIB\C51S.LIB (?C_INIT)
 
 
 LINK MAP OF MODULE:  .\Objects\project (MAIN)
@@ -25,19 +24,18 @@ LINK MAP OF MODULE:  .\Objects\project (MAIN)
 
             * * * * * * *   D A T A   M E M O R Y   * * * * * * *
             REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
-            DATA    0008H     0068H     UNIT         ?DT?MAIN
-            DATA    0070H     0003H     UNIT         _DATA_GROUP_
-            IDATA   0073H     0001H     UNIT         ?STACK
+            DATA    0008H     0003H     UNIT         _DATA_GROUP_
+            IDATA   000BH     0001H     UNIT         ?STACK
 
             * * * * * * *   C O D E   M E M O R Y   * * * * * * *
             CODE    0000H     0003H     ABSOLUTE     
-            CODE    0003H     008CH     UNIT         ?C_C51STARTUP
-            CODE    008FH     006CH     UNIT         ?C_INITSEG
-            CODE    00FBH     0040H     UNIT         ?PR?MAIN?MAIN
-            CODE    013BH     002DH     UNIT         ?PR?__74HC595_WRITEBYTE?MATRIXLED
-            CODE    0168H     0022H     UNIT         ?PR?_MATRIXLEDSHOWCOLUMN?MATRIXLED
-            CODE    018AH     0015H     UNIT         ?PR?_DELAY?DELAY
-            CODE    019FH     0005H     UNIT         ?PR?MATRIXLED_INIT?MATRIXLED
+            CODE    0003H     0048H     UNIT         ?CO?MAIN
+            CODE    004BH     0040H     UNIT         ?PR?MAIN?MAIN
+            CODE    008BH     002DH     UNIT         ?PR?__74HC595_WRITEBYTE?MATRIXLED
+            CODE    00B8H     0022H     UNIT         ?PR?_MATRIXLEDSHOWCOLUMN?MATRIXLED
+            CODE    00DAH     0015H     UNIT         ?PR?_DELAY?DELAY
+            CODE    00EFH     000CH     UNIT         ?C_C51STARTUP
+            CODE    00FBH     0005H     UNIT         ?PR?MATRIXLED_INIT?MATRIXLED
 
 
 
@@ -49,19 +47,19 @@ SEGMENT                                      DATA_GROUP
 ----------------------------------------------------------
 ?C_C51STARTUP                              -----    -----
   +--> ?PR?MAIN?MAIN
-  +--> ?C_INITSEG
 
-?PR?MAIN?MAIN                              0070H    0003H
+?PR?MAIN?MAIN                              0008H    0003H
   +--> ?PR?MATRIXLED_INIT?MATRIXLED
+  +--> ?CO?MAIN
   +--> ?PR?_MATRIXLEDSHOWCOLUMN?MATRIXLED
 
 ?PR?_MATRIXLEDSHOWCOLUMN?MATRIXLED         -----    -----
   +--> ?PR?__74HC595_WRITEBYTE?MATRIXLED
   +--> ?PR?_DELAY?DELAY
 
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  08/15/2023  09:55:53  PAGE 2
 
 
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  08/15/2023  10:11:51  PAGE 2
 
 
 SYMBOL TABLE OF MODULE:  .\Objects\project (MAIN)
@@ -71,108 +69,108 @@ SYMBOL TABLE OF MODULE:  .\Objects\project (MAIN)
 
   -------         MODULE        MAIN
   C:0000H         SYMBOL        _ICE_DUMMY_
-  C:00FBH         PUBLIC        main
-  D:0008H         PUBLIC        animation
+  C:004BH         PUBLIC        main
+  C:0003H         PUBLIC        animation
   -------         PROC          MAIN
   -------         DO            
-  D:0070H         SYMBOL        i
-  D:0071H         SYMBOL        offset
-  D:0072H         SYMBOL        count
+  D:0008H         SYMBOL        i
+  D:0009H         SYMBOL        offset
+  D:000AH         SYMBOL        count
   -------         ENDDO         
-  C:00FBH         LINE#         18
-  C:00FBH         LINE#         19
-  C:00FBH         LINE#         23
-  C:0100H         LINE#         24
-  C:0103H         LINE#         25
-  C:0103H         LINE#         26
-  C:0103H         LINE#         27
-  C:0106H         LINE#         28
-  C:0106H         LINE#         29
-  C:0116H         LINE#         30
-  C:011FH         LINE#         31
-  C:0121H         LINE#         32
-  C:0128H         LINE#         33
-  C:0128H         LINE#         34
-  C:012BH         LINE#         35
-  C:0131H         LINE#         36
-  C:0136H         LINE#         37
-  C:0139H         LINE#         38
-  C:0139H         LINE#         39
+  C:004BH         LINE#         14
+  C:004BH         LINE#         15
+  C:004BH         LINE#         19
+  C:0050H         LINE#         20
+  C:0053H         LINE#         21
+  C:0053H         LINE#         22
+  C:0053H         LINE#         23
+  C:0056H         LINE#         24
+  C:0056H         LINE#         25
+  C:0066H         LINE#         26
+  C:006FH         LINE#         27
+  C:0071H         LINE#         28
+  C:0078H         LINE#         29
+  C:0078H         LINE#         30
+  C:007BH         LINE#         31
+  C:0081H         LINE#         32
+  C:0086H         LINE#         33
+  C:0089H         LINE#         34
+  C:0089H         LINE#         35
   -------         ENDPROC       MAIN
   -------         ENDMOD        MAIN
 
   -------         MODULE        MATRIXLED
   C:0000H         SYMBOL        _ICE_DUMMY_
   D:0080H         PUBLIC        P0
-  C:013BH         PUBLIC        __74HC595_WriteByte
+  C:008BH         PUBLIC        __74HC595_WriteByte
   D:00B0H         PUBLIC        P3
-  C:019FH         PUBLIC        MatrixLED_Init
+  C:00FBH         PUBLIC        MatrixLED_Init
   B:00B0H.5       PUBLIC        RCK
   B:00B0H.6       PUBLIC        SCK
-  C:0168H         PUBLIC        _MatrixLEDShowColumn
+  C:00B8H         PUBLIC        _MatrixLEDShowColumn
   B:00B0H.4       PUBLIC        SER
   -------         PROC          __74HC595_WRITEBYTE
   D:0005H         SYMBOL        byte
   -------         DO            
   D:0003H         SYMBOL        i
   -------         ENDDO         
-  C:013BH         LINE#         12
-  C:013DH         LINE#         13
-  C:013DH         LINE#         15
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  08/15/2023  09:55:53  PAGE 3
+  C:008BH         LINE#         12
+  C:008DH         LINE#         13
+  C:008DH         LINE#         15
+  C:008FH         LINE#         16
+  C:008FH         LINE#         17
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  08/15/2023  10:11:51  PAGE 3
 
 
-  C:013FH         LINE#         16
-  C:013FH         LINE#         17
-  C:015BH         LINE#         18
-  C:015DH         LINE#         19
-  C:015FH         LINE#         20
-  C:0163H         LINE#         21
-  C:0165H         LINE#         22
-  C:0167H         LINE#         23
+  C:00ABH         LINE#         18
+  C:00ADH         LINE#         19
+  C:00AFH         LINE#         20
+  C:00B3H         LINE#         21
+  C:00B5H         LINE#         22
+  C:00B7H         LINE#         23
   -------         ENDPROC       __74HC595_WRITEBYTE
   -------         PROC          _MATRIXLEDSHOWCOLUMN
   D:0002H         SYMBOL        column
   D:0004H         SYMBOL        da
-  C:0168H         LINE#         30
-  C:016AH         LINE#         31
-  C:016AH         LINE#         32
-  C:016FH         LINE#         33
-  C:017FH         LINE#         34
-  C:0186H         LINE#         35
-  C:0189H         LINE#         36
+  C:00B8H         LINE#         30
+  C:00BAH         LINE#         31
+  C:00BAH         LINE#         32
+  C:00BFH         LINE#         33
+  C:00CFH         LINE#         34
+  C:00D6H         LINE#         35
+  C:00D9H         LINE#         36
   -------         ENDPROC       _MATRIXLEDSHOWCOLUMN
   -------         PROC          MATRIXLED_INIT
-  C:019FH         LINE#         42
-  C:019FH         LINE#         43
-  C:019FH         LINE#         44
-  C:01A1H         LINE#         45
-  C:01A3H         LINE#         46
+  C:00FBH         LINE#         42
+  C:00FBH         LINE#         43
+  C:00FBH         LINE#         44
+  C:00FDH         LINE#         45
+  C:00FFH         LINE#         46
   -------         ENDPROC       MATRIXLED_INIT
   -------         ENDMOD        MATRIXLED
 
   -------         MODULE        DELAY
   C:0000H         SYMBOL        _ICE_DUMMY_
-  C:018AH         PUBLIC        _Delay
+  C:00DAH         PUBLIC        _Delay
   -------         PROC          _DELAY
   D:0006H         SYMBOL        xms
   -------         DO            
   D:0005H         SYMBOL        i
   D:0004H         SYMBOL        j
   -------         ENDDO         
-  C:018AH         LINE#         3
-  C:018AH         LINE#         4
-  C:018AH         LINE#         6
-  C:0194H         LINE#         7
-  C:0194H         LINE#         8
-  C:0196H         LINE#         9
-  C:0198H         LINE#         11
-  C:0198H         LINE#         12
-  C:019AH         LINE#         13
-  C:019CH         LINE#         14
-  C:019EH         LINE#         15
+  C:00DAH         LINE#         3
+  C:00DAH         LINE#         4
+  C:00DAH         LINE#         6
+  C:00E4H         LINE#         7
+  C:00E4H         LINE#         8
+  C:00E6H         LINE#         9
+  C:00E8H         LINE#         11
+  C:00E8H         LINE#         12
+  C:00EAH         LINE#         13
+  C:00ECH         LINE#         14
+  C:00EEH         LINE#         15
   -------         ENDPROC       _DELAY
   -------         ENDMOD        DELAY
 
-Program Size: data=116.0 xdata=0 code=420
+Program Size: data=12.0 xdata=0 code=256
 LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)
