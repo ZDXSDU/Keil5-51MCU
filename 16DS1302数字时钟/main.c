@@ -13,7 +13,7 @@ void main()
 	while(1)
 	{
 		Seconds = DS1302_ReadByte(0x81);
-		LCD_ShowNum(2, 1, Seconds, 4);
+		LCD_ShowNum(2, 1, Seconds / 16 * 10 + Seconds % 16, 4);
 		Delay(100);
 	}
 }
