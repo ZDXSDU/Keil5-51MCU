@@ -1,0 +1,863 @@
+C51 COMPILER V9.60.7.0   MAIN                                                              08/17/2023 14:48:47 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: D:\Keil_v5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\main
+                    -.lst) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #define IDL_    0x01
+   2          #define STOP_   0x02
+   3          #define PD_     0x02 
+   4          #define GF0_    0x04
+   5          #define GF1_    0x08
+   6          #define SMOD_   0x80
+   7          #define T0_M0_   0x01
+   8          #define T0_M1_   0x02
+   9          #define T0_CT_   0x04
+  10          #define T0_GATE_ 0x08
+  11          #define T1_M0_   0x10
+  12          #define T1_M1_   0x20
+  13          #define T1_CT_   0x40
+  14          #define T1_GATE_ 0x80
+  15          #define T1_MASK_ 0xF0
+  16          #define T0_MASK_ 0x0F
+  17          #define DCEN_   0x01    
+  18          #define T2OE_   0x02
+  19          #define IE0_VECTOR      0 
+  20          #define TF0_VECTOR      1
+  21          #define IE1_VECTOR      2
+  22          #define TF1_VECTOR      3
+  23          #define SIO_VECTOR      4
+  24          #define TF2_VECTOR      5
+  25          #define EX2_VECTOR      5
+  26          #define LCD_DataPort P0
+  27          #define DS1302_Second_Write 0x80
+  28          #define DS1302_Minute_Write 0x82
+  29          #define DS1302_Hour_Write 0x84
+  30          #define DS1302_Day_Write 0x86
+  31          #define DS1302_Month_Write 0x88
+  32          #define DS1302_Week_Write 0x8A
+  33          #define DS1302_Year_Write 0x8C
+  34          #define DS1302_WP 0x8E
+  35          sfr P0      = 0x80;
+  36          sfr SP      = 0x81;
+  37          sfr DPL     = 0x82;
+  38          sfr DPH     = 0x83;
+  39          sfr PCON    = 0x87;
+  40          sfr TCON    = 0x88;
+  41          sfr TMOD    = 0x89;
+  42          sfr TL0     = 0x8A;
+  43          sfr TL1     = 0x8B;
+  44          sfr TH0     = 0x8C;
+  45          sfr TH1     = 0x8D;
+  46          sfr P1      = 0x90;
+  47          sfr SCON    = 0x98;
+  48          sfr SBUF    = 0x99;
+  49          sfr P2      = 0xA0;
+  50          sfr IE      = 0xA8;
+  51          sfr P3      = 0xB0;
+  52          sfr IP      = 0xB8;
+  53          sfr T2CON   = 0xC8;
+  54          sfr T2MOD   = 0xC9;
+C51 COMPILER V9.60.7.0   MAIN                                                              08/17/2023 14:48:47 PAGE 2   
+
+  55          sfr RCAP2L  = 0xCA;
+  56          sfr RCAP2H  = 0xCB;
+  57          sfr TL2     = 0xCC;
+  58          sfr TH2     = 0xCD;
+  59          sfr PSW     = 0xD0;
+  60          sfr ACC     = 0xE0;
+  61          sfr B       = 0xF0;
+  62          sbit P0_0 = 0x80;
+  63          sbit P0_1 = 0x81;
+  64          sbit P0_2 = 0x82;
+  65          sbit P0_3 = 0x83;
+  66          sbit P0_4 = 0x84;
+  67          sbit P0_5 = 0x85;
+  68          sbit P0_6 = 0x86;
+  69          sbit P0_7 = 0x87;
+  70          sbit IT0  = 0x88;
+  71          sbit IE0  = 0x89;
+  72          sbit IT1  = 0x8A;
+  73          sbit IE1  = 0x8B;
+  74          sbit TR0  = 0x8C;
+  75          sbit TF0  = 0x8D;
+  76          sbit TR1  = 0x8E;
+  77          sbit TF1  = 0x8F;
+  78          sbit P1_0 = 0x90;
+  79          sbit P1_1 = 0x91;
+  80          sbit P1_2 = 0x92;
+  81          sbit P1_3 = 0x93;
+  82          sbit P1_4 = 0x94;
+  83          sbit P1_5 = 0x95;
+  84          sbit P1_6 = 0x96;
+  85          sbit P1_7 = 0x97;
+  86          sbit T2   = 0x90;
+  87          sbit T2EX = 0x91;
+  88          sbit RI   = 0x98;
+  89          sbit TI   = 0x99;
+  90          sbit RB8  = 0x9A;
+  91          sbit TB8  = 0x9B;
+  92          sbit REN  = 0x9C;
+  93          sbit SM2  = 0x9D;
+  94          sbit SM1  = 0x9E;
+  95          sbit SM0  = 0x9F;
+  96          sbit P2_0 = 0xA0;
+  97          sbit P2_1 = 0xA1;
+  98          sbit P2_2 = 0xA2;
+  99          sbit P2_3 = 0xA3;
+ 100          sbit P2_4 = 0xA4;
+ 101          sbit P2_5 = 0xA5;
+ 102          sbit P2_6 = 0xA6;
+ 103          sbit P2_7 = 0xA7;
+ 104          sbit EX0  = 0xA8;
+ 105          sbit ET0  = 0xA9;
+ 106          sbit EX1  = 0xAA;
+ 107          sbit ET1  = 0xAB;
+ 108          sbit ES   = 0xAC;
+ 109          sbit ET2  = 0xAD;
+ 110          sbit EA   = 0xAF;
+ 111          sbit P3_0 = 0xB0;
+ 112          sbit P3_1 = 0xB1;
+ 113          sbit P3_2 = 0xB2;
+ 114          sbit P3_3 = 0xB3;
+ 115          sbit P3_4 = 0xB4;
+ 116          sbit P3_5 = 0xB5;
+C51 COMPILER V9.60.7.0   MAIN                                                              08/17/2023 14:48:47 PAGE 3   
+
+ 117          sbit P3_6 = 0xB6;
+ 118          sbit P3_7 = 0xB7;
+ 119          sbit RXD  = 0xB0;      
+ 120          sbit TXD  = 0xB1;       
+ 121          sbit INT0 = 0xB2;       
+ 122          sbit INT1 = 0xB3;       
+ 123          sbit T0   = 0xB4;       
+ 124          sbit T1   = 0xB5;       
+ 125          sbit WR   = 0xB6;       
+ 126          sbit RD   = 0xB7;       
+ 127          sbit PX0  = 0xB8;
+ 128          sbit PT0  = 0xB9;
+ 129          sbit PX1  = 0xBA;
+ 130          sbit PT1  = 0xBB;
+ 131          sbit PS   = 0xBC;
+ 132          sbit PT2  = 0xBD;
+ 133          sbit CP_RL2= 0xC8;      
+ 134          sbit C_T2 = 0xC9;       
+ 135          sbit TR2  = 0xCA;       
+ 136          sbit EXEN2= 0xCB;       
+ 137          sbit TCLK = 0xCC;       
+ 138          sbit RCLK = 0xCD;       
+ 139          sbit EXF2 = 0xCE;       
+ 140          sbit TF2  = 0xCF;
+ 141          sbit P    = 0xD0;
+ 142          sbit F1   = 0xD1;
+ 143          sbit OV   = 0xD2;
+ 144          sbit RS0  = 0xD3;
+ 145          sbit RS1  = 0xD4;
+ 146          sbit F0   = 0xD5;
+ 147          sbit AC   = 0xD6;
+ 148          sbit CY   = 0xD7;
+ 149          sbit DS1302_SCLK = P3^6;
+ 150          sbit DS1302_IO = P3^4;
+ 151          sbit DS1302_CE = P3^5;
+ 152          sbit LCD_RS=P2^6;
+ 153          sbit LCD_RW=P2^5;
+ 154          sbit LCD_EN=P2^7;
+ 155          unsigned char KeyNum;
+ 156          unsigned char MODE;
+ 157          unsigned char TimeSetSelect;
+ 158          unsigned char TimeSetFlashFlag;
+ 159          unsigned char DS1302_Time[] = {23, 8, 16, 14, 4, 00, 3};
+ 160          unsigned char Key();
+ 161          unsigned char DS1302_ReadByte(unsigned char Command);
+ 162          int LCD_Pow(int X, int Y);
+ 163          void TimeShow(void);
+ 164          void TimeSet(void);
+ 165          void LCD_Init();
+ 166          void LCD_ShowBinNum(unsigned char Line, unsigned char Column, unsigned int Number, unsigned char Length);
+ 167          void LCD_ShowHexNum(unsigned char Line, unsigned char Column, unsigned int Number, unsigned char Length);
+ 168          void LCD_ShowSignedNum(unsigned char Line, unsigned char Column, int Number, unsigned char Length);
+ 169          void LCD_ShowNum(unsigned char Line, unsigned char Column, unsigned int Number, unsigned char Length);
+ 170          void LCD_ShowString(unsigned char Line, unsigned char Column, char *String);
+ 171          void LCD_ShowChar(unsigned char Line, unsigned char Column, char Char);
+ 172          void LCD_SetCursor(unsigned char Line, unsigned char Column);
+ 173          void LCD_WriteData(unsigned char Data);
+ 174          void LCD_WriteCommand(unsigned char Command);
+ 175          void LCD_Delay();
+ 176          void Timer0_Init();
+ 177          void DS1302_GetTime(void);
+ 178          void DS1302_SetTime(void);
+C51 COMPILER V9.60.7.0   MAIN                                                              08/17/2023 14:48:47 PAGE 4   
+
+ 179          void Delay(unsigned int xms);
+ 180          void DS1302_Init(void);
+ 181          void DS1302_WriteByte(unsigned char Command, Data);
+ 182          /* 《按键调时》
+ 183          * K1: 切换时钟模式[显示<=>设置]。按键将改变MODE值，根据MODE值调用不同的函数[Ti
+             -meShow()<=>TimeSet()]
+ 184          * K2: 时钟设置选择位[Y<=>M<=>D<=>H<=>M<=>S]
+ 185          * K3: 加
+ 186          * K4: 减
+ 187          */
+ 188          void main()
+ 189          {
+ 190   1              Timer0_Init();
+ 191   1              LCD_Init();
+ 192   1              DS1302_Init();
+ 193   1              // 2023-08-16 Week3
+ 194   1              // 13:20:35  ZDXSDU
+ 195   1              LCD_ShowString(1, 1, "20  -  -   Week");
+ 196   1              LCD_ShowString(2, 1, "  :  :    ZDXSDU");
+ 197   1              DS1302_SetTime();
+ 198   1              while(1)
+ 199   1              {
+ 200   2                      KeyNum = Key();
+ 201   2                      if(KeyNum == 1)
+ 202   2                      {                       
+ 203   3                              if(MODE == 0) MODE = 1;
+ 204   3                              else if(MODE == 1)
+ 205   3                              {
+ 206   4                                      MODE = 0;
+ 207   4                                      DS1302_SetTime();
+ 208   4                              }                               
+ 209   3                      }               
+ 210   2                      switch(MODE)
+ 211   2                      {
+ 212   3                              case 0 : 
+ 213   3                                      TimeShow(); 
+ 214   3                                      LCD_ShowString(1, 12, "week");
+ 215   3                                      break;
+ 216   3                              case 1 : 
+ 217   3                                      TimeSet();
+ 218   3                                      LCD_ShowString(1, 12, " set");
+ 219   3                                      break;
+ 220   3                      }
+ 221   2              }
+ 222   1      }
+ 223          /**
+ 224          * @brief 读取DS1302的时间，并显示在LCD1602上
+ 225          * @param  无
+ 226          * @retval 无
+ 227          * @interpretation  描述
+ 228          */
+ 229          void TimeShow(void)
+ 230          {
+ 231   1              DS1302_GetTime();
+ 232   1              LCD_ShowNum(1,3,DS1302_Time[0],2); // 年
+ 233   1              LCD_ShowNum(1,6,DS1302_Time[1],2); // 月
+ 234   1              LCD_ShowNum(1,9,DS1302_Time[2],2); // 日
+ 235   1              LCD_ShowNum(2,1,DS1302_Time[3],2); // 时
+ 236   1              LCD_ShowNum(2,4,DS1302_Time[4],2); // 分
+ 237   1              LCD_ShowNum(2,7,DS1302_Time[5],2); // 秒
+ 238   1              LCD_ShowNum(1,16,DS1302_Time[6],1); // 周
+ 239   1      }
+C51 COMPILER V9.60.7.0   MAIN                                                              08/17/2023 14:48:47 PAGE 5   
+
+ 240          /**
+ 241          * @brief 设置时钟
+ 242          * @param  无
+ 243          * @retval 无
+ 244          * @interpretation  描述
+ 245          */
+ 246          void TimeSet(void)
+ 247          {
+ 248   1              if(KeyNum == 2) // 选择要调整的项目，0~5依次分别对应年月日时分秒同时对应DS1302_T
+             -ime的index
+ 249   1              {
+ 250   2                      TimeSetSelect++;
+ 251   2                      TimeSetSelect %= 7; // 越界清零相当于if(TimeSetSelect > 6) TimeSetSelect = 0;
+ 252   2              }
+ 253   1              if(KeyNum == 3) // 对选中的值进行加1
+ 254   1              {
+ 255   2                      DS1302_Time[TimeSetSelect]++;
+ 256   2                      // 合法性判断
+ 257   2                      if(DS1302_Time[0] > 99) DS1302_Time[0] = 0;
+ 258   2                      if(DS1302_Time[1] > 12) DS1302_Time[1] = 1;
+ 259   2                      if(DS1302_Time[1] == 1 || DS1302_Time[1] == 3 || DS1302_Time[1] == 5 || DS1302_Time[1] == 7 || DS1302_Ti
+             -me[1] == 8 || DS1302_Time[1] == 10 || DS1302_Time[1] == 12)
+ 260   2                      {
+ 261   3                              if(DS1302_Time[2] > 31) DS1302_Time[2] = 1;
+ 262   3                      }
+ 263   2                      else if(DS1302_Time[1] == 4 || DS1302_Time[1] == 6 || DS1302_Time[1] == 9 || DS1302_Time[1] == 11)
+ 264   2                      {
+ 265   3                              if(DS1302_Time[2] > 30) DS1302_Time[2] = 1;
+ 266   3                      }
+ 267   2                      else if(DS1302_Time[1] == 2)
+ 268   2                      {
+ 269   3                              if(DS1302_Time[0] % 4 == 0)
+ 270   3                              { 
+ 271   4                                      if(DS1302_Time[2] > 29) DS1302_Time[2] = 1;
+ 272   4                              }
+ 273   3                              else
+ 274   3                              {
+ 275   4                                      if(DS1302_Time[2] > 28) DS1302_Time[2] = 1;
+ 276   4                              }
+ 277   3                      }
+ 278   2                      if(DS1302_Time[3] > 23) DS1302_Time[3] = 0;
+ 279   2                      if(DS1302_Time[4] > 59) DS1302_Time[4] = 0;
+ 280   2                      if(DS1302_Time[5] > 59) DS1302_Time[5] = 0;
+ 281   2                      if(DS1302_Time[6] > 7) DS1302_Time[6] = 1;
+ 282   2              }
+ 283   1              if(KeyNum == 4) // 队选中的值进行减1
+ 284   1              {
+ 285   2                      DS1302_Time[TimeSetSelect]--;
+ 286   2                      // 合法性判断，由于使用的是无符号的数据类型 因此当减到0再减1时 结果不是-
+             -1 而是255，所以这里要用>100来判断
+ 287   2                      if(DS1302_Time[0] > 100) DS1302_Time[0] = 99;
+ 288   2                      // 月份的合法性判断中还需要包含对日期的切换
+ 289   2                      if(DS1302_Time[1] == 0) DS1302_Time[1] = 12;            
+ 290   2                      if(DS1302_Time[1] == 1 || DS1302_Time[1] == 3 || DS1302_Time[1] == 5 || DS1302_Time[1] == 7 || DS1302_Ti
+             -me[1] == 8 || DS1302_Time[1] == 10 || DS1302_Time[1] == 12)
+ 291   2                      {
+ 292   3                              if(DS1302_Time[2] == 0) DS1302_Time[2] = 31;
+ 293   3                              if(DS1302_Time[2] > 31) DS1302_Time[2] = 1;
+ 294   3                      }
+ 295   2                      else if(DS1302_Time[1] == 4 || DS1302_Time[1] == 6 || DS1302_Time[1] == 9 || DS1302_Time[1] == 11)
+ 296   2                      {
+ 297   3                              if(DS1302_Time[2] == 0) DS1302_Time[2] = 30;
+C51 COMPILER V9.60.7.0   MAIN                                                              08/17/2023 14:48:47 PAGE 6   
+
+ 298   3                              if(DS1302_Time[2] > 30) DS1302_Time[2] = 1;
+ 299   3                      }
+ 300   2                      else if(DS1302_Time[1] == 2)
+ 301   2                      {
+ 302   3                              if(DS1302_Time[0] % 4 == 0)
+ 303   3                              { 
+ 304   4                                      if(DS1302_Time[2] == 0) DS1302_Time[2] = 29;
+ 305   4                                      if(DS1302_Time[2] > 29) DS1302_Time[2] = 1;
+ 306   4                              }
+ 307   3                              else
+ 308   3                              {
+ 309   4                                      if(DS1302_Time[2] == 0) DS1302_Time[2] = 28;
+ 310   4                                      if(DS1302_Time[2] > 28) DS1302_Time[2] = 1;
+ 311   4                              }
+ 312   3                      }
+ 313   2                      if(DS1302_Time[3] > 100) DS1302_Time[3] = 23;
+ 314   2                      if(DS1302_Time[4] > 100) DS1302_Time[4] = 59;
+ 315   2                      if(DS1302_Time[5] > 100) DS1302_Time[5] = 59;
+ 316   2                      if(DS1302_Time[6] == 0) DS1302_Time[6] = 7;
+ 317   2              }
+ 318   1              // 加减完成后需要对LCD进行重新显示但不重新请求DS1302
+ 319   1              // 如果当前的被选中了，并且数字闪烁的标识位为真，则不显示该数字，反之则
+             -显示
+ 320   1              if(TimeSetSelect == 0 && TimeSetFlashFlag == 1)
+ 321   1              {
+ 322   2                      LCD_ShowString(1, 3, "  ");
+ 323   2              }
+ 324   1              else
+ 325   1              {
+ 326   2                      LCD_ShowNum(1,3,DS1302_Time[0],2); // 年
+ 327   2              }       
+ 328   1              if(TimeSetSelect == 1 && TimeSetFlashFlag == 1)
+ 329   1              {
+ 330   2                      LCD_ShowString(1, 6, "  ");
+ 331   2              }
+ 332   1              else
+ 333   1              {
+ 334   2                      LCD_ShowNum(1,6,DS1302_Time[1],2); // 月
+ 335   2              }
+ 336   1              if(TimeSetSelect == 2 && TimeSetFlashFlag == 1)
+ 337   1              {
+ 338   2                      LCD_ShowString(1, 9, "  ");
+ 339   2              }
+ 340   1              else
+ 341   1              {
+ 342   2                      LCD_ShowNum(1,9,DS1302_Time[2],2); // 日
+ 343   2              }
+ 344   1              if(TimeSetSelect == 3 && TimeSetFlashFlag == 1)
+ 345   1              {
+ 346   2                      LCD_ShowString(2, 1, "  ");
+ 347   2              }
+ 348   1              else
+ 349   1              {
+ 350   2                      LCD_ShowNum(2,1,DS1302_Time[3],2); // 时
+ 351   2              }
+ 352   1              if(TimeSetSelect == 4 && TimeSetFlashFlag == 1)
+ 353   1              {
+ 354   2                      LCD_ShowString(2, 4, "  ");
+ 355   2              }
+ 356   1              else
+ 357   1              {
+ 358   2                      LCD_ShowNum(2,4,DS1302_Time[4],2); // 分
+C51 COMPILER V9.60.7.0   MAIN                                                              08/17/2023 14:48:47 PAGE 7   
+
+ 359   2              }
+ 360   1              if(TimeSetSelect == 5 && TimeSetFlashFlag == 1)
+ 361   1              {
+ 362   2                      LCD_ShowString(2, 7, "  ");
+ 363   2              }
+ 364   1              else
+ 365   1              {
+ 366   2                      LCD_ShowNum(2,7,DS1302_Time[5],2); // 秒
+ 367   2              }
+ 368   1              if(TimeSetSelect == 6 && TimeSetFlashFlag == 1)
+ 369   1              {
+ 370   2                      LCD_ShowString(1, 16, "  ");
+ 371   2              }
+ 372   1              else
+ 373   1              {
+ 374   2                      LCD_ShowNum(1,16,DS1302_Time[6],1); // 周
+ 375   2              }
+ 376   1      }
+ 377          /**
+ 378          * @brief 定时器0的中断函数
+ 379          * @param  无
+ 380          * @retval 无
+ 381          * @interpretation  描述
+ 382          */
+ 383          void Timer0_Routine() interrupt 1
+ 384          {
+ 385   1              static unsigned int T0Count; // 静态变量用于记录中断次数
+ 386   1              // 每一次中断都将定时器的初始值重新赋值，以保证每次都是1ms中断
+ 387   1              TH0 = 0xFC;
+ 388   1              TL0 = 0x18;
+ 389   1              // 每一次中断（1MS），都将T0Count计数器加一，直到加满1000MS视为一秒钟，此时�
+             -�将T0Count计数器置0
+ 390   1              T0Count++;
+ 391   1              if(T0Count >= 500)
+ 392   1              {
+ 393   2                      T0Count = 0;
+ 394   2                      TimeSetFlashFlag = !TimeSetFlashFlag; // 通过控制闪烁标志位来实现对应的数字闪烁
+ 395   2              }
+ 396   1      }
+ 397          /**
+ 398          * @brief 延时子函数
+ 399          * @param  unsigned int xms 延时时间
+ 400          * @retval 无
+ 401          * @interpretation  描述
+ 402          */
+ 403          void Delay(unsigned int xms)
+ 404          {
+ 405   1              unsigned char i, j;
+ 406   1              while(xms--)
+ 407   1              {
+ 408   2                      i = 2;
+ 409   2                      j = 239;
+ 410   2                      do
+ 411   2                      {
+ 412   3                              while (--j);
+ 413   3                      } while (--i);
+ 414   2              }
+ 415   1      }
+ 416          /**
+ 417          * @brief DS1302初始化
+ 418          * @param  无
+ 419          * @retval 无
+C51 COMPILER V9.60.7.0   MAIN                                                              08/17/2023 14:48:47 PAGE 8   
+
+ 420          * @interpretation 由于MCU上电时I/O口均为高电平，需要给DS1302的时钟和使能引脚低电�
+             -��
+ 421          */
+ 422          void DS1302_Init(void)
+ 423          {
+ 424   1              DS1302_CE = 0;
+ 425   1              DS1302_SCLK = 0;
+ 426   1      }
+ 427          /**
+ 428          * @brief 向DS1302写入数据
+ 429          * @param Command：命令字
+ 430          * @param Data：写入的数据字节
+ 431          * @retval 无
+ 432          * @interpretation 描述
+ 433          */
+ 434          void DS1302_WriteByte(unsigned char Command, Data)
+ 435          {
+ 436   1              unsigned char i;
+ 437   1              DS1302_CE = 1; // 芯片使能引脚给高电平使其有效    
+ 438   1              for(i = 0; i < 8; i++)
+ 439   1              {
+ 440   2                      DS1302_IO = Command & (0x01 << i); // 取出命令字的第i位
+ 441   2                      DS1302_SCLK = 1; // 上升沿将数据写入DS1302
+ 442   2                      DS1302_SCLK = 0; // 恢复串行时钟置0
+ 443   2              }
+ 444   1              for(i = 0; i < 8; i++)
+ 445   1              {
+ 446   2                      DS1302_IO = Data & (0x01 << i); // 取出Data字节的第i位
+ 447   2                      DS1302_SCLK = 1; // 上升沿将数据写入DS1302
+ 448   2                      DS1302_SCLK = 0; // 恢复串行时钟置0
+ 449   2              }
+ 450   1              DS1302_CE = 0; // 关闭芯片使能
+ 451   1      }
+ 452          /**
+ 453          * @brief 向DS1302读取数据
+ 454          * @param Command：命令字
+ 455          * @retval [char]: DS1302返回的数据
+ 456          * @interpretation  描述
+ 457          */
+ 458          unsigned char DS1302_ReadByte(unsigned char Command)
+ 459          {
+ 460   1              unsigned char i, Data = 0x00;
+ 461   1              DS1302_CE = 1; // 芯片使能引脚给高电平使其有效
+ 462   1              for(i = 0; i < 8; i++)
+ 463   1              {
+ 464   2                      DS1302_IO = Command & (0x01 << i); // 取出命令字的第i位
+ 465   2                      // 由于DS1302的写入和读取的时序不一样，这里需要先给0再给1
+ 466   2                      DS1302_SCLK = 0; // 恢复串行时钟置0
+ 467   2                      DS1302_SCLK = 1; // 上升沿将数据写入DS1302
+ 468   2              }
+ 469   1              for(i = 0; i < 8; i++)
+ 470   1              {
+ 471   2                      // 这里在取数据的时候又将时序反了过来，原因是如果先0后1会造成多给了一个
+             -脉冲周期
+ 472   2                      DS1302_SCLK = 1; // 恢复串行时钟置1
+ 473   2                      DS1302_SCLK = 0; // 下降沿读取DS1302的数据              
+ 474   2                      if(DS1302_IO)
+ 475   2                              Data |= (0x01 << i); // 如果DS1302的返回值是1，那么就将接收变量Data对应位置也变�
+             -�1
+ 476   2              }
+ 477   1              DS1302_CE = 0; // 关闭芯片使能
+ 478   1              DS1302_IO = 0; // 将串行数据口清零，防止读出的不对
+C51 COMPILER V9.60.7.0   MAIN                                                              08/17/2023 14:48:47 PAGE 9   
+
+ 479   1              return Data;
+ 480   1      }
+ 481          /**
+ 482          * @brief 将上方的DS1302_Time中的时间写入到DS1302中
+ 483          * @param  无
+ 484          * @retval 无
+ 485          * @interpretation  描述
+ 486          */
+ 487          void DS1302_SetTime(void)
+ 488          {
+ 489   1              DS1302_WriteByte(DS1302_WP, 0x00); // 关闭DS1302芯片写保护
+ 490   1              DS1302_WriteByte(DS1302_Year_Write, DS1302_Time[0] / 10 * 16 + DS1302_Time[0] % 10); // 将年转成BCD�
+             -�后，写入DS1302
+ 491   1              DS1302_WriteByte(DS1302_Month_Write, DS1302_Time[1] / 10 * 16 + DS1302_Time[1] % 10); // 将月转成BCD�
+             -��后，写入DS1302
+ 492   1              DS1302_WriteByte(DS1302_Day_Write, DS1302_Time[2] / 10 * 16 + DS1302_Time[2] % 10); // 将日期转成BCD
+             -码后，写入DS1302
+ 493   1              DS1302_WriteByte(DS1302_Hour_Write, DS1302_Time[3] / 10 * 16 + DS1302_Time[3] % 10); // 将小时转成BC
+             -D码后，写入DS1302
+ 494   1              DS1302_WriteByte(DS1302_Minute_Write, DS1302_Time[4] / 10 * 16 + DS1302_Time[4] % 10); // 将分钟转成
+             -BCD码后，写入DS1302
+ 495   1              DS1302_WriteByte(DS1302_Second_Write, DS1302_Time[5] / 10 * 16 + DS1302_Time[5] % 10); // 将秒转成BCD
+             -码后，写入DS1302
+ 496   1              DS1302_WriteByte(DS1302_Week_Write, DS1302_Time[6] / 10 * 16 + DS1302_Time[6] % 10); // 将星期几转�
+             -�BCD码后，写入DS1302
+ 497   1              DS1302_WriteByte(DS1302_WP, 0x80); // 打开DS1302芯片写保护
+ 498   1      }
+ 499          /**
+ 500          * @brief 把DS1302中的时间读取出来放到上方的DS1302_Time数组中
+ 501          * @param  无
+ 502          * @retval 无
+ 503          * @interpretation  描述
+ 504          */
+ 505          void DS1302_GetTime(void)
+ 506          {
+ 507   1              unsigned char RetvalTemp; // 这里定义一个临时变量，防止在BCD转DEC的时候两次调用返�
+             -��的值不对（时间总是会流逝的）
+ 508   1              // 由于上方定义的地址都是写数据的地址，并且读的地址相当于写地址的LSB位改
+             -成1，因此需要对其或等于，将最低为改成零
+ 509   1              RetvalTemp = DS1302_ReadByte(DS1302_Year_Write | 0x01);
+ 510   1              DS1302_Time[0] = RetvalTemp / 16 * 10 + RetvalTemp % 16;
+ 511   1              RetvalTemp = DS1302_ReadByte(DS1302_Month_Write | 0x01);
+ 512   1              DS1302_Time[1] = RetvalTemp / 16 * 10 + RetvalTemp % 16;
+ 513   1              RetvalTemp = DS1302_ReadByte(DS1302_Day_Write | 0x01);
+ 514   1              DS1302_Time[2] = RetvalTemp / 16 * 10 + RetvalTemp % 16;
+ 515   1              RetvalTemp = DS1302_ReadByte(DS1302_Hour_Write | 0x01);
+ 516   1              DS1302_Time[3] = RetvalTemp / 16 * 10 + RetvalTemp % 16;
+ 517   1              RetvalTemp = DS1302_ReadByte(DS1302_Minute_Write | 0x01);
+ 518   1              DS1302_Time[4] = RetvalTemp / 16 * 10 + RetvalTemp % 16;
+ 519   1              RetvalTemp = DS1302_ReadByte(DS1302_Second_Write | 0x01);
+ 520   1              DS1302_Time[5] = RetvalTemp / 16 * 10 + RetvalTemp % 16;
+ 521   1              RetvalTemp = DS1302_ReadByte(DS1302_Week_Write | 0x01);
+ 522   1              DS1302_Time[6] = RetvalTemp / 16 * 10 + RetvalTemp % 16;
+ 523   1      }
+ 524          /**
+ 525          * @brief 定时器0的1毫秒*1000=1秒定时器通用初始化函数
+ 526          * @param  无
+ 527          * @retval 无
+ 528          */
+ 529          void Timer0_Init()
+ 530          {
+ 531   1              // 在不改变定时器1的前提下配置定时器0的模式寄存器TMOD（不可位寻址）
+C51 COMPILER V9.60.7.0   MAIN                                                              08/17/2023 14:48:47 PAGE 10  
+
+ 532   1              TMOD &= 0xF0;
+ 533   1              TMOD |= 0x01;
+ 534   1              // 配置定时器0的控制寄存器TCON（可位寻址）
+ 535   1              TF0 = 0; // 溢出中断标志置于0，防止定时器刚一启动就中断
+ 536   1              TR0 = 1; // 运行控制位，允许T0开始计数
+ 537   1              // 配置定时器的初始值（高4位+低4位）
+ 538   1              TH0 = 0xFC; // DEC[(65535-1000)/16^2]=>HEX 取出高位
+ 539   1              TL0 = 0x18; // DEC[(65535-1000)%16^2]=>HEX 取出低位
+ 540   1              // 配置中断系统的寄存器以及中断优先级
+ 541   1              ET0 = 1; // 中断
+ 542   1              EA = 1; // 总中断使能
+ 543   1              PT0 = 0;// 优先级置于最低
+ 544   1      }
+ 545          /**
+ 546          * @brief  获取独立按键键码
+ 547          * @param  无
+ 548          * @retval 按下按键的键码，范围：0~4，无按键按下时返回值为0
+ 549          */
+ 550          unsigned char Key()
+ 551          {
+ 552   1              unsigned char KeyNumber = 0;    
+ 553   1              if(P3_1 == 0)
+ 554   1              {
+ 555   2                      Delay(20);
+ 556   2                      while(P3_1 == 0);
+ 557   2                      Delay(20);
+ 558   2                      KeyNumber = 1;
+ 559   2              }
+ 560   1              if(P3_0 == 0)
+ 561   1              {
+ 562   2                      Delay(20);
+ 563   2                      while(P3_0 == 0);
+ 564   2                      Delay(20);
+ 565   2                      KeyNumber = 2;
+ 566   2              }
+ 567   1              if(P3_2 == 0)
+ 568   1              {
+ 569   2                      Delay(20);
+ 570   2                      while(P3_2 == 0);
+ 571   2                      Delay(20);
+ 572   2                      KeyNumber = 3;
+ 573   2              }
+ 574   1              if(P3_3 == 0)
+ 575   1              {
+ 576   2                      Delay(20);
+ 577   2                      while(P3_3 == 0);
+ 578   2                      Delay(20);
+ 579   2                      KeyNumber = 4;
+ 580   2              }       
+ 581   1              return KeyNumber;
+ 582   1      }
+ 583          /**
+ 584          * @brief  LCD1602延时函数，12MHz调用可延时1ms
+ 585          * @param  无
+ 586          * @retval 无
+ 587          */
+ 588          void LCD_Delay()
+ 589          {
+ 590   1              unsigned char i, j;
+ 591   1      
+ 592   1              i = 2;
+ 593   1              j = 239;
+C51 COMPILER V9.60.7.0   MAIN                                                              08/17/2023 14:48:47 PAGE 11  
+
+ 594   1              do
+ 595   1              {
+ 596   2                      while (--j);
+ 597   2              } while (--i);
+ 598   1      }
+ 599          
+ 600          /**
+ 601          * @brief  LCD1602写命令
+ 602          * @param  Command 要写入的命令
+ 603          * @retval 无
+ 604          */
+ 605          void LCD_WriteCommand(unsigned char Command)
+ 606          {
+ 607   1              LCD_RS = 0;
+ 608   1              LCD_RW = 0;
+ 609   1              LCD_DataPort = Command;
+ 610   1              LCD_EN = 1;
+ 611   1              LCD_Delay();
+ 612   1              LCD_EN = 0;
+ 613   1              LCD_Delay();
+ 614   1      }
+ 615          
+ 616          /**
+ 617          * @brief  LCD1602写数据
+ 618          * @param  Data 要写入的数据
+ 619          * @retval 无
+ 620          */
+ 621          void LCD_WriteData(unsigned char Data)
+ 622          {
+ 623   1              LCD_RS = 1;
+ 624   1              LCD_RW = 0;
+ 625   1              LCD_DataPort = Data;
+ 626   1              LCD_EN = 1;
+ 627   1              LCD_Delay();
+ 628   1              LCD_EN = 0;
+ 629   1              LCD_Delay();
+ 630   1      }
+ 631          /**
+ 632          * @brief  LCD1602设置光标位置
+ 633          * @param  Line 行位置，范围：1~2
+ 634          * @param  Column 列位置，范围：1~16
+ 635          * @retval 无
+ 636          */
+ 637          void LCD_SetCursor(unsigned char Line, unsigned char Column)
+ 638          {
+ 639   1              if(Line == 1)
+ 640   1              {
+ 641   2                      LCD_WriteCommand(0x80 | (Column - 1));
+ 642   2              }
+ 643   1              else if(Line == 2)
+ 644   1              {
+ 645   2                      LCD_WriteCommand(0x80 | (Column - 1 + 0x40));
+ 646   2              }
+ 647   1      }
+ 648          /**
+ 649          * @brief  LCD1602初始化函数
+ 650          * @param  无
+ 651          * @retval 无
+ 652          */
+ 653          void LCD_Init()
+ 654          {
+ 655   1              LCD_WriteCommand(0x38);//八位数据接口，两行显示，5*7点阵
+C51 COMPILER V9.60.7.0   MAIN                                                              08/17/2023 14:48:47 PAGE 12  
+
+ 656   1              LCD_WriteCommand(0x0c);//显示开，光标关，闪烁关
+ 657   1              LCD_WriteCommand(0x06);//数据读写操作后，光标自动加一，画面不动
+ 658   1              LCD_WriteCommand(0x01);//光标复位，清屏
+ 659   1      }
+ 660          /**
+ 661          * @brief  在LCD1602指定位置上显示一个字符
+ 662          * @param  Line 行位置，范围：1~2
+ 663          * @param  Column 列位置，范围：1~16
+ 664          * @param  Char 要显示的字符
+ 665          * @retval 无
+ 666          */
+ 667          void LCD_ShowChar(unsigned char Line, unsigned char Column, char Char)
+ 668          {
+ 669   1              LCD_SetCursor(Line, Column);
+ 670   1              LCD_WriteData(Char);
+ 671   1      }
+ 672          
+ 673          /**
+ 674          * @brief  在LCD1602指定位置开始显示所给字符串
+ 675          * @param  Line 起始行位置，范围：1~2
+ 676          * @param  Column 起始列位置，范围：1~16
+ 677          * @param  String 要显示的字符串
+ 678          * @retval 无
+ 679          */
+ 680          void LCD_ShowString(unsigned char Line, unsigned char Column, char *String)
+ 681          {
+ 682   1              unsigned char i;
+ 683   1              LCD_SetCursor(Line, Column);
+ 684   1              for(i = 0; String[i] != '\0'; i++)
+ 685   1              {
+ 686   2                      LCD_WriteData(String[i]);
+ 687   2              }
+ 688   1      }
+ 689          /**
+ 690          * @brief  返回值=X的Y次方
+ 691          */
+ 692          int LCD_Pow(int X, int Y)
+ 693          {
+ 694   1              unsigned char i;
+ 695   1              int Result = 1;
+ 696   1              for(i = 0; i < Y; i++)
+ 697   1              {
+ 698   2                      Result *= X;
+ 699   2              }
+ 700   1              return Result;
+ 701   1      }
+ 702          /**
+ 703          * @brief  在LCD1602指定位置开始显示所给数字
+ 704          * @param  Line 起始行位置，范围：1~2
+ 705          * @param  Column 起始列位置，范围：1~16
+ 706          * @param  Number 要显示的数字，范围：0~65535
+ 707          * @param  Length 要显示数字的长度，范围：1~5
+ 708          * @retval 无
+ 709          */
+ 710          void LCD_ShowNum(unsigned char Line, unsigned char Column, unsigned int Number, unsigned char Length)
+ 711          {
+ 712   1              unsigned char i;
+ 713   1              LCD_SetCursor(Line, Column);
+ 714   1              for(i = Length; i > 0; i--)
+ 715   1              {
+ 716   2                      LCD_WriteData(Number / LCD_Pow(10, i - 1) % 10 + '0');
+ 717   2              }
+C51 COMPILER V9.60.7.0   MAIN                                                              08/17/2023 14:48:47 PAGE 13  
+
+ 718   1      }
+ 719          /**
+ 720          * @brief  在LCD1602指定位置开始以有符号十进制显示所给数字
+ 721          * @param  Line 起始行位置，范围：1~2
+ 722          * @param  Column 起始列位置，范围：1~16
+ 723          * @param  Number 要显示的数字，范围：-32768~32767
+ 724          * @param  Length 要显示数字的长度，范围：1~5
+ 725          * @retval 无
+ 726          */
+ 727          void LCD_ShowSignedNum(unsigned char Line, unsigned char Column, int Number, unsigned char Length)
+ 728          {
+ 729   1              unsigned char i;
+ 730   1              unsigned int Number1;
+ 731   1              LCD_SetCursor(Line,Column);
+ 732   1              if(Number >= 0)
+ 733   1              {
+ 734   2                      LCD_WriteData('+');
+ 735   2                      Number1 = Number;
+ 736   2              }
+ 737   1              else
+ 738   1              {
+ 739   2                      LCD_WriteData('-');
+ 740   2                      Number1 = -Number;
+ 741   2              }
+ 742   1              for(i = Length; i > 0; i--)
+ 743   1              {
+ 744   2                      LCD_WriteData(Number1 / LCD_Pow(10, i - 1) % 10 + '0');
+ 745   2              }
+ 746   1      }
+ 747          /**
+ 748          * @brief  在LCD1602指定位置开始以十六进制显示所给数字
+ 749          * @param  Line 起始行位置，范围：1~2
+ 750          * @param  Column 起始列位置，范围：1~16
+ 751          * @param  Number 要显示的数字，范围：0~0xFFFF
+ 752          * @param  Length 要显示数字的长度，范围：1~4
+ 753          * @retval 无
+ 754          */
+ 755          void LCD_ShowHexNum(unsigned char Line,
+ 756                  unsigned char Column,
+ 757                  unsigned int Number,
+ 758                  unsigned char Length)
+ 759          {
+ 760   1              unsigned char i, SingleNumber;
+ 761   1              LCD_SetCursor(Line, Column);
+ 762   1              for(i = Length; i > 0; i--)
+ 763   1              {
+ 764   2                      SingleNumber = Number / LCD_Pow(16, i - 1) % 16;
+ 765   2                      if(SingleNumber < 10)
+ 766   2                      {
+ 767   3                              LCD_WriteData(SingleNumber + '0');
+ 768   3                      }
+ 769   2                      else
+ 770   2                      {
+ 771   3                              LCD_WriteData(SingleNumber - 10 + 'A');
+ 772   3                      }
+ 773   2              }
+ 774   1      }
+ 775          /**
+ 776          * @brief  在LCD1602指定位置开始以二进制显示所给数字
+ 777          * @param  Line 起始行位置，范围：1~2
+ 778          * @param  Column 起始列位置，范围：1~16
+ 779          * @param  Number 要显示的数字，范围：0~1111 1111 1111 1111
+C51 COMPILER V9.60.7.0   MAIN                                                              08/17/2023 14:48:47 PAGE 14  
+
+ 780          * @param  Length 要显示数字的长度，范围：1~16
+ 781          * @retval 无
+ 782          */
+ 783          void LCD_ShowBinNum(unsigned char Line, 
+ 784                  unsigned char Column, 
+ 785                  unsigned int Number, 
+ 786                  unsigned char Length)
+ 787          {
+ 788   1              unsigned char i;
+ 789   1              LCD_SetCursor(Line, Column);
+ 790   1              for(i = Length; i > 0; i--)
+ 791   1              {
+ 792   2                      LCD_WriteData(Number / LCD_Pow(2, i - 1) % 2 + '0');
+ 793   2              }
+ 794   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   2001    ----
+   CONSTANT SIZE    =     46    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     13      31
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
