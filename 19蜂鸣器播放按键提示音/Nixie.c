@@ -19,6 +19,6 @@ void Nixie(unsigned char Location,Number)
 		case 8:P2_4=0;P2_3=0;P2_2=0;break;
 	}
 	P0=NixieTable[Number];	//段码输出
-	Delay(1);				//显示一段时间
-	P0=0x00;				//段码清0，消影
+//	Delay(1);				//显示一段时间
+//	P0=0x00;				//段码清0，消影
 }

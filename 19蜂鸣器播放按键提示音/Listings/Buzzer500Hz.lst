@@ -1,0 +1,44 @@
+C51 COMPILER V9.60.7.0   BUZZER500HZ                                                       08/18/2023 08:55:04 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE BUZZER500HZ
+OBJECT MODULE PLACED IN .\Objects\Buzzer500Hz.obj
+COMPILER INVOKED BY: D:\Keil_v5\C51\BIN\C51.EXE Buzzer500Hz.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listin
+                    -gs\Buzzer500Hz.lst) OBJECT(.\Objects\Buzzer500Hz.obj)
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          #include "Delay.h" // 延时
+   3          sbit Buzzer = P2^5;
+   4          unsigned int i;
+   5          /**
+   6          * @brief 以500Hz的频率播放俺家按提示音
+   7          * @param  unsigned int ms 蜂鸣时长
+   8          * @retval 无
+   9          * @interpretation  描述
+  10          */
+  11          void Buzzer500Hz(unsigned int ms)
+  12          {
+  13   1              for(i = 0; i < ms; i++)
+  14   1              {
+  15   2                      Buzzer = !Buzzer;
+  16   2                      Delay(1);
+  17   2                      /*delay 1ms ：高电平1毫秒、低电平1毫秒，周期是2毫秒（0.002秒），频率是1 / 0.002
+             - = 500Hz*/
+  18   2              }
+  19   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     40    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      2       2
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

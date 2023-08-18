@@ -2,7 +2,8 @@
 ".\Objects\Delay.obj",
 ".\Objects\Key.obj",
 ".\Objects\Nixie.obj",
-".\Objects\Timer0.obj" 
+".\Objects\Timer0.obj",
+".\Objects\Buzzer.obj" 
 TO ".\Objects\project" 
 PRINT(".\Listings\project.m51") RAMSIZE(256) 
 DISABLEWARNING (16) 
