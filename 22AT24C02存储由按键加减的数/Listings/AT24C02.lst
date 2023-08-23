@@ -1,0 +1,79 @@
+C51 COMPILER V9.60.7.0   AT24C02                                                           08/19/2023 15:56:51 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE AT24C02
+OBJECT MODULE PLACED IN .\Objects\AT24C02.obj
+COMPILER INVOKED BY: D:\Keil_v5\C51\BIN\C51.EXE AT24C02.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\A
+                    -T24C02.lst) OBJECT(.\Objects\AT24C02.obj)
+
+line level    source
+
+   1          /**
+   2           * @Author: ZDXSDU [ZDXSDU@qq.com]
+   3           * @Date: Aug. 19, 2023 14:49:25
+   4           * @LastEditors: ZDXSDU [ZDXSDU@qq.com]
+   5           * @LastEditTime: 
+   6           * @FilePath: ./AT24C02.c
+   7           * @Description: 定义AT24C02的两个数据帧
+   8           */
+   9          #include <REGX52.H>
+  10          #include "I2C.h"
+  11          #define AT24C02_SLAVE_ADDRESS_W 0xA0 // 定义AT24C02的写地址
+  12          #define AT24C02_SLAVE_ADDRESS_R 0xA1 // 定义AT24C02的读地址
+  13          /**
+  14          * @brief AT24C02数据帧-字节写
+  15          * @param  WordAddress 写入的地址，Data 写入的数据
+  16          * @retval 无
+  17          * @interpretation  在WordAddress处写入Data数据
+  18          */
+  19          void AT24C01_WriteByte(unsigned char WordAddress, Data)
+  20          {
+  21   1              // 正常情况下定义一个变量用来接收AT24C02的应答，从而判断其是否收到了主机�
+             -�送的数据
+  22   1              I2C_Start(); // 起始条件
+  23   1              I2C_SendByte(AT24C02_SLAVE_ADDRESS_W); // 发送地址和写指令
+  24   1              I2C_ReceiveAck(); // 接收AT24C02的应答
+  25   1              I2C_SendByte(WordAddress); // 向AT24C02发送数据-写入的地址
+  26   1              I2C_ReceiveAck(); // 接收AT24C02的应答
+  27   1              I2C_SendByte(Data); // 向AT24C02发送数据-写入的数据
+  28   1              I2C_ReceiveAck(); // 接收AT24C02的应答
+  29   1              I2C_Stop(); // 终止条件
+  30   1      }
+  31          /**
+  32          * @brief AT24C02数据帧-随机读
+  33          * @param  unsigned char WordAddress 要读取的地址
+  34          * @retval 无
+  35          * @interpretation  在WordAddress处写入Data数据
+  36          */
+  37          unsigned char AT24C02_ReadByte(unsigned char WordAddress)
+  38          {
+  39   1              unsigned char Data;
+  40   1              I2C_Start(); // 起始条件
+  41   1              I2C_SendByte(AT24C02_SLAVE_ADDRESS_W); // 发送地址和写指令
+  42   1              I2C_ReceiveAck(); // 接收AT24C02的应答
+  43   1              I2C_SendByte(WordAddress); // 向AT24C02发送数据-要读取的地址
+  44   1              I2C_ReceiveAck(); // 接收AT24C02的应答
+  45   1              I2C_Start(); // 起始条件
+  46   1              I2C_SendByte(AT24C02_SLAVE_ADDRESS_R); // 发送地址和读指令
+  47   1              I2C_ReceiveAck(); // 接收AT24C02的应答
+  48   1              Data = I2C_ReceiveByte(); // 接收AT24C02返回的数据
+  49   1              I2C_SendAck(1); // 向AT24C02发送数据应答
+  50   1              I2C_Stop(); //终止条件
+  51   1              return Data;
+  52   1      }
+
+C51 COMPILER V9.60.7.0   AT24C02                                                           08/19/2023 15:56:51 PAGE 2   
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     84    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       5
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
