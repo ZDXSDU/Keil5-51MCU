@@ -1,4 +1,4 @@
-C51 COMPILER V9.60.7.0   NIXIE                                                             08/22/2023 08:20:52 PAGE 1   
+C51 COMPILER V9.60.7.0   NIXIE                                                             08/30/2023 08:37:00 PAGE 1   
 
 
 C51 COMPILER V9.60.7.0, COMPILATION OF MODULE NIXIE
@@ -9,37 +9,67 @@ COMPILER INVOKED BY: D:\Keil_v5\C51\BIN\C51.EXE Nixie.c OPTIMIZE(8,SPEED) BROWSE
 line level    source
 
    1          #include <REGX52.H>
-   2          #include "Delay.h"      //包含Delay头文件
-   3          
-   4          //数码管段码表
-   5          unsigned char NixieTable[]={0x3F,0x06,0x5B,0x4F,0x66,0x6D,0x7D,0x07,0x7F,0x6F};
-   6          
-   7          //数码管显示子函数
-   8          void Nixie(unsigned char Location,Number)
-   9          {
-  10   1              switch(Location)                //位码输出
-  11   1              {
-  12   2                      case 1:P2_4=1;P2_3=1;P2_2=1;break;
-  13   2                      case 2:P2_4=1;P2_3=1;P2_2=0;break;
-  14   2                      case 3:P2_4=1;P2_3=0;P2_2=1;break;
-  15   2                      case 4:P2_4=1;P2_3=0;P2_2=0;break;
-  16   2                      case 5:P2_4=0;P2_3=1;P2_2=1;break;
-  17   2                      case 6:P2_4=0;P2_3=1;P2_2=0;break;
-  18   2                      case 7:P2_4=0;P2_3=0;P2_2=1;break;
-  19   2                      case 8:P2_4=0;P2_3=0;P2_2=0;break;
-  20   2              }
-  21   1              P0=NixieTable[Number];  //段码输出
-  22   1              Delay(1);                               //显示一段时间
-  23   1              P0=0x00;                                //段码清0，消影
-  24   1      }
+   2          unsigned char NixieTable[12] = {0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x07, 0x7F, 0x6F, 0x00, 0x40}; /
+             -/ 数码管段码表，分别对应0~9\空\短横线
+   3          unsigned char NixieBuf[9] = {0, 10, 10, 10, 10, 10, 10, 10, 10}; // 显示缓冲区，NixieBuf[1]~[8]分�
+             -�对应8个数码管中要显示的数字，10对应NixieTable[10]=>啥都不显示
+   4          /**
+   5          * @brief 数码管扫描
+   6          * @param Location 在第几个数码管上显示
+   7          * @param Number 显示什么内容
+   8          * @retval 无
+   9          * @interpretation  描述
+  10          */
+  11          void Nixie_Scan(unsigned char Location, Number)
+  12          {
+  13   1              P0 = 0x00; // 清空段码
+  14   1              switch(Location)
+  15   1              {
+  16   2                      case 1: P2_4=1; P2_3=1; P2_2=1; break;
+  17   2                      case 2: P2_4=1; P2_3=1; P2_2=0; break;
+  18   2                      case 3: P2_4=1; P2_3=0; P2_2=1; break;
+  19   2                      case 4: P2_4=1; P2_3=0; P2_2=0; break;
+  20   2                      case 5: P2_4=0; P2_3=1; P2_2=1; break;
+  21   2                      case 6: P2_4=0; P2_3=1; P2_2=0; break;
+  22   2                      case 7: P2_4=0; P2_3=0; P2_2=1; break;
+  23   2                      case 8: P2_4=0; P2_3=0; P2_2=0; break;
+  24   2              }
+  25   1              P0 = NixieTable[Number]; // 段码输出                
+  26   1      }
+  27          /**
+  28          * @brief 可供外界调用的修改显示缓冲区的函数
+  29          * @param Location 在第几个数码管上显示
+  30          * @param Number 显示什么内容
+  31          * @retval 无
+  32          * @interpretation  描述
+  33          */
+  34          void Nixie_SetBuf(unsigned char Location, Number)
+  35          {
+  36   1              NixieBuf[Location] = Number;
+  37   1      }
+  38          /**
+  39          * @brief 供Timer0定时器interrupt1中断函数内调用的方法，每两毫秒调用一次
+  40          * @param  无
+  41          * @retval 无
+  42          * @interpretation  每次执行，都将显示缓冲区的数字显示一位到数码管中
+  43          */
+  44          void Nixie_Loop(void)
+  45          {
+  46   1              static unsigned char i = 1;
+  47   1              Nixie_Scan(i, NixieBuf[i]);
+  48   1              i++;
+  49   1              if(i >= 9) i = 1; // 由定时器控制，每隔一段时间循环以实现扫描
+  50   1      }
 
+
+C51 COMPILER V9.60.7.0   NIXIE                                                             08/30/2023 08:37:00 PAGE 2   
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    109    ----
+   CODE SIZE        =    138    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =     10    ----
+   DATA SIZE        =     22    ----
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.

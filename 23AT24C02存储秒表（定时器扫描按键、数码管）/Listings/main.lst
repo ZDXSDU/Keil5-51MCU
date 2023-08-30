@@ -1,4 +1,4 @@
-C51 COMPILER V9.60.7.0   MAIN                                                              08/22/2023 08:25:57 PAGE 1   
+C51 COMPILER V9.60.7.0   MAIN                                                              08/30/2023 09:17:39 PAGE 1   
 
 
 C51 COMPILER V9.60.7.0, COMPILATION OF MODULE MAIN
@@ -9,41 +9,118 @@ COMPILER INVOKED BY: D:\Keil_v5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE 
 line level    source
 
    1          #include <REGX52.H>
-   2          #include "Delay.h"
-   3          #include "Timer0.h"
-   4          #include "Nixie.h"
-   5          #include "Key.h"
-   6          void main()
-   7          {
-   8   1              Timer0_Init();
-   9   1              while(1)
-  10   1              {
-  11   2                      
-  12   2              }
-  13   1      }
-  14          void Timer0_Routine() interrupt 1
-  15          {
-  16   1              static unsigned int T0Count; // 静态变量用于记录中断次数
-  17   1              // 每一次中断都将定时器的初始值重新赋值，以保证每次都是1ms中断
-  18   1              TH0 = 0xFC;
-  19   1              TL0 = 0x18;
-  20   1              // 每一次中断（1MS），都将T0Count计数器加一，直到加满1000MS视为一秒钟，此时�
-             -�将T0Count计数器置0
-  21   1              T0Count++;
-  22   1              if(T0Count > 1000)
-  23   1              {
-  24   2                      T0Count = 0;
-  25   2                      P2 = ~P2;
-  26   2              }
-  27   1      }
+   2          #include "Timer0.h"
+   3          #include "Nixie.h"
+   4          #include "Key.h"
+   5          #include "I2C.h"
+   6          #include "AT24C02.h"
+   7          #include "Delay.h"
+   8          unsigned char Key_Number, RunFlag; // 按键键码, 启动暂停的标识位
+   9          unsigned char Min, Sec, MiniSec; // 分别定义分、秒、小迷你秒（计到100就秒加1的伪毫秒
+             -）
+  10          void main()
+  11          {
+  12   1              /*
+  13   1              * K1: 启动/暂停秒表
+  14   1              * K2：重置
+  15   1              * K3：存储结果至AT24C02
+  16   1              * K4：读取结果自AT24C02
+  17   1              */
+  18   1              Timer0_Init();
+  19   1              while(1)
+  20   1              {
+  21   2                      Key_Number = Key();
+  22   2                      if(Key_Number == 1)
+  23   2                      {
+  24   3                              RunFlag = !RunFlag;
+  25   3                      }
+  26   2                      if(Key_Number == 2)
+  27   2                      {
+  28   3                              Min = 0;
+  29   3                              Sec = 0;
+  30   3                              MiniSec = 0;
+  31   3                      }
+  32   2                      if(Key_Number == 3)
+  33   2                      {
+  34   3                              AT24C01_WriteByte(0, Min);
+  35   3                              Delay(6);
+  36   3                              AT24C01_WriteByte(1, Sec);
+  37   3                              Delay(6);
+  38   3                              AT24C01_WriteByte(2, MiniSec);
+  39   3                              Delay(6);
+  40   3                      }
+  41   2                      if(Key_Number == 4)
+  42   2                      {
+  43   3                              Min = AT24C02_ReadByte(0);
+  44   3                              Sec = AT24C02_ReadByte(1);
+  45   3                              MiniSec = AT24C02_ReadByte(2);
+  46   3                      }
+  47   2                      Nixie_SetBuf(1, Min / 10); // 分钟的高位
+  48   2                      Nixie_SetBuf(2, Min % 10); // 分钟的低位
+  49   2                      Nixie_SetBuf(3, 11); // 断码数组NixieTable[11]是个短横线
+  50   2                      Nixie_SetBuf(4, Sec / 10);
+  51   2                      Nixie_SetBuf(5, Sec % 10);
+  52   2                      Nixie_SetBuf(6, 11);
+  53   2                      Nixie_SetBuf(7, MiniSec / 10);
+C51 COMPILER V9.60.7.0   MAIN                                                              08/30/2023 09:17:39 PAGE 2   
+
+  54   2                      Nixie_SetBuf(8, MiniSec % 10);                          
+  55   2              }
+  56   1      }
+  57          /**
+  58          * @brief 由定时器的中断函数调用的控制秒增加的函数
+  59          * @param  无
+  60          * @retval 无
+  61          * @interpretation  描述
+  62          */
+  63          void Sec_loop(void)     
+  64          {
+  65   1              if(RunFlag)
+  66   1              {
+  67   2                      MiniSec++;
+  68   2                      if(MiniSec >= 100)
+  69   2                      {
+  70   3                              MiniSec = 0;
+  71   3                              Sec++;
+  72   3                              if(Sec >= 60)
+  73   3                              {
+  74   4                                      Sec = 0;
+  75   4                                      Min++;
+  76   4                                      if(Min >= 60)
+  77   4                                      {
+  78   5                                              Min = 0;
+  79   5                                      }
+  80   4                              }
+  81   3                      }
+  82   2              }
+  83   1      }
+  84          void Timer0_Routine() interrupt 1
+  85          {
+  86   1              static unsigned int T0Count1, T0Count2;
+  87   1              TH0 = 0xFC;
+  88   1              TL0 = 0x66;
+  89   1              T0Count1++;
+  90   1              T0Count2++;
+  91   1              if(T0Count1 > 20)
+  92   1              { // 这个地方每隔20ms调用一次，是为了消除按键的抖动
+  93   2                      T0Count1 = 0;
+  94   2                      Key_Loop();
+  95   2              }
+  96   1              Nixie_Loop();
+  97   1              if(T0Count2 >= 10)
+  98   1              {
+  99   2                      T0Count2 = 0;
+ 100   2                      Sec_loop();
+ 101   2              }
+ 102   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     46    ----
+   CODE SIZE        =    391    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =      2    ----
+   DATA SIZE        =      9    ----
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.
