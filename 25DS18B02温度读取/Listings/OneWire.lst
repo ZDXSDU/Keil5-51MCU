@@ -1,0 +1,114 @@
+C51 COMPILER V9.60.7.0   ONEWIRE                                                           09/01/2023 15:47:46 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE ONEWIRE
+OBJECT MODULE PLACED IN .\Objects\OneWire.obj
+COMPILER INVOKED BY: D:\Keil_v5\C51\BIN\C51.EXE OneWire.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\O
+                    -neWire.lst) OBJECT(.\Objects\OneWire.obj)
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          #include <INTRINS.H>
+   3          sbit OneWire_DQ = P3^7;
+   4          /**
+   5          * @brief 1-Wire 总线初始化函数
+   6          * @param  无
+   7          * @retval unsigned char ACKBit 从机是否响应，如果响应则返回0；如果未响应则返回1
+   8          * @interpretation  描述
+   9          */
+  10          unsigned char OneWire_Init(void)
+  11          {
+  12   1              unsigned char i;
+  13   1              unsigned char ACKBit;
+  14   1              // 主机拉低DQ总线500us    
+  15   1              OneWire_DQ = 1;
+  16   1              OneWire_DQ = 0; 
+  17   1              i = 230;        while (--i); // 11.0592MHz 500us
+  18   1              // 主机释放DQ总线
+  19   1              OneWire_DQ = 1;
+  20   1              // 等待70us后，判断从机响应
+  21   1              _nop_();        i = 31;         while (--i); // 11.0592MHz 70us
+  22   1              ACKBit = OneWire_DQ;
+  23   1              // 等待500us，走完初始化的时间片
+  24   1              i = 230;        while (--i); // 11.0592MHz 500us
+  25   1              return ACKBit;
+  26   1      }
+  27          /**
+  28          * @brief 发送一个数据位
+  29          * @param  unsigned char Bit 要发送的数据位
+  30          * @retval 无
+  31          * @interpretation  描述
+  32          */
+  33          void OneWire_SendBit(unsigned char Bit)
+  34          {
+  35   1              unsigned char i;
+  36   1              OneWire_DQ = 0;
+  37   1              i = 4;  while (--i); // 11.0592MHz 10us
+  38   1              OneWire_DQ = Bit;
+  39   1              i = 22; while (--i); // 11.0592MHz 50us
+  40   1              OneWire_DQ = 1;
+  41   1      }
+  42          /**
+  43          * @brief 接收一个数据位
+  44          * @param  无
+  45          * @retval unsigned char Bit 要发送的数据位
+  46          * @interpretation  描述
+  47          */
+  48          unsigned char OneWire_ReadBit(void)
+  49          {
+  50   1              unsigned char AckBit, i;
+  51   1              OneWire_DQ = 0;
+  52   1              i = 2;  while (--i); // 11.0592MHz 5us
+  53   1              OneWire_DQ = 1;
+  54   1              i = 2;  while (--i); // 11.0592MHz 5us
+C51 COMPILER V9.60.7.0   ONEWIRE                                                           09/01/2023 15:47:46 PAGE 2   
+
+  55   1              AckBit = OneWire_DQ;
+  56   1              i = 22; while (--i); // 11.0592MHz 50us
+  57   1              return AckBit;
+  58   1      }
+  59          /**
+  60          * @brief 发送一个字节
+  61          * @param  要发送的字节
+  62          * @retval 无
+  63          * @interpretation  描述
+  64          */
+  65          void OneWire_SendByte(unsigned char byte)
+  66          {
+  67   1              unsigned char i;
+  68   1              for(i = 0; i < 8; i++)
+  69   1              {
+  70   2                      OneWire_SendBit(byte & (0x01 << i)); // 调用发送一位八次，取出字节byte，低位在前
+  71   2              }
+  72   1      }
+  73          /**
+  74          * @brief 接收一个字节
+  75          * @param  无
+  76          * @retval 接收到的字节数
+  77          * @interpretation  描述
+  78          */
+  79          unsigned char OneWire_ReadBtye(void)
+  80          {
+  81   1              unsigned char ResByte = 0x00, i;
+  82   1              for(i = 0; i < 8; i++)
+  83   1              {
+  84   2                      if(OneWire_ReadBit())
+  85   2                              ResByte |= (0x01 << i);
+  86   2              }
+  87   1              return ResByte;
+  88   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    123    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
