@@ -29,7 +29,7 @@ void main(void)
 		// 再显示温度的小数部分，思路是先乘以一万，然后强制类型转换成long，之后再对long类型的值和一万取余，得出小数部分并显示
 		LCD_ShowNum(2, 2, Temperature, 3);
 		LCD_ShowChar(2, 5, '.');
-		LCD_ShowNum(2, 6, (unsigned long)(Temperature * 10000) % 10000, 3);
+		LCD_ShowNum(2, 6, (unsigned long)(Temperature * 10000) % 10000, 4);
 		Delay(1000);
 	}
 }
