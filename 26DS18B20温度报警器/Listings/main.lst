@@ -1,0 +1,189 @@
+C51 COMPILER V9.60.7.0   MAIN                                                              09/04/2023 09:43:31 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: D:\Keil_v5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\main
+                    -.lst) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          #include "Timer0.h"
+   3          #include "OneWire.h"
+   4          #include "DS18B20.h"
+   5          #include "LCD1602.h"
+   6          #include "Delay.h"
+   7          #include "Buzzer.h"
+   8          #include "Key.h"
+   9          #include "AT24C02.h"
+  10          #include "I2C.h"
+  11          void LCD_ShowFloat(float F, unsigned char Row, Clo);
+  12          void LCD_ShowThTl(void);
+  13          void ChangeThTl_Compare(void);
+  14          void Compare(void);
+  15          char Tem_MIN, Tem_MAX; // 温度上限和下限
+  16          float Temperature;
+  17          void main(void)
+  18          {
+  19   1              Timer0_Init();
+  20   1              LCD_Init();
+  21   1              LCD_ShowString(1, 1, "T:          OV:");
+  22   1              LCD_ShowString(2, 1, "TL:      TH:");
+  23   1              DS18B20_ConvertT();
+  24   1              Tem_MAX = AT24C02_ReadByte(0);  //读取温度阈值数据
+  25   1              Tem_MIN = AT24C02_ReadByte(1);
+  26   1              if(Tem_MAX > 125 || Tem_MIN < -55 || Tem_MAX <= Tem_MIN)
+  27   1              {
+  28   2                      Tem_MAX = 35;                   //如果阈值非法，则设为默认值
+  29   2                      Tem_MIN = 28;
+  30   2              }
+  31   1              while(1)
+  32   1              {
+  33   2                      DS18B20_ConvertT();
+  34   2                      Delay(500);
+  35   2                      Temperature = DS18B20_ReadT();
+  36   2                      LCD_ShowFloat(Temperature, 1, 3);
+  37   2                      ChangeThTl_Compare();
+  38   2                      LCD_ShowThTl();
+  39   2                      //Compare();
+  40   2              }
+  41   1      }
+  42          void Timer0_Routine() interrupt 1
+  43          {
+  44   1              static unsigned int T0Count;
+  45   1              TH0 = 0xD4;
+  46   1              TL0 = 0xCD;
+  47   1              T0Count++;
+  48   1              if(T0Count > 20)
+  49   1              {
+  50   2                      T0Count = 0;
+  51   2                      Key_Loop();
+  52   2              }
+  53   1      }
+  54          /**
+C51 COMPILER V9.60.7.0   MAIN                                                              09/04/2023 09:43:31 PAGE 2   
+
+  55          * @brief 将DS18B20的温度显示在LCD1602上
+  56          * @param  float F：DB18B20返回的浮点温度； Row, Clo ：在LCD1602的几行几列显示
+  57          * @retval 无
+  58          * @interpretation  描述
+  59          */
+  60          void LCD_ShowFloat(float F, unsigned char Row, Clo) // 浮点，行，列
+  61          {
+  62   1              if(F < 0)
+  63   1              {
+  64   2                      F = -F;
+  65   2                      LCD_ShowChar(Row, Clo, '-');
+  66   2              }
+  67   1              else
+  68   1              {
+  69   2                      LCD_ShowChar(Row, Clo, '+');
+  70   2              }
+  71   1              LCD_ShowNum(Row, Clo + 1, F, 3); // 整数部分
+  72   1              LCD_ShowChar(Row, Clo + 1 + 3, '.'); // 小数点
+  73   1              LCD_ShowNum(Row, Clo + 1 + 3 + 1, (unsigned long)(F * 10000) % 10000, 3); // 小数部分
+  74   1      }
+  75          /**
+  76          * @brief 用LCD1602显示报警温度的上下阈值
+  77          * @param  无
+  78          * @retval 无
+  79          * @interpretation  描述
+  80          */
+  81          void LCD_ShowThTl(void)
+  82          {       
+  83   1              LCD_ShowSignedNum(2, 4, Tem_MIN, 3);
+  84   1              LCD_ShowSignedNum(2, 13, Tem_MAX, 3);
+  85   1      }
+  86          /**
+  87          * @brief 独立按键控制温度报警阈值的上下限
+  88          * @param  无
+  89          * @retval 无
+  90          * @interpretation  描述
+  91          */
+  92          void ChangeThTl_Compare(void)
+  93          {
+  94   1              unsigned char KeyNum = 0;
+  95   1              KeyNum = Key();
+  96   1              if(KeyNum > 0)
+  97   1              {
+  98   2                      if(KeyNum == 1)
+  99   2                      {
+ 100   3                              Tem_MIN++;
+ 101   3                              if(Tem_MIN > 125) Tem_MIN = 125;
+ 102   3                              if(Tem_MIN > Tem_MAX) Tem_MIN = Tem_MAX;
+ 103   3                      }
+ 104   2                      if(KeyNum == 2)
+ 105   2                      {
+ 106   3                              Tem_MIN--;
+ 107   3                              if(Tem_MIN < -55) Tem_MIN = -55;
+ 108   3                              if(Tem_MIN > Tem_MAX) Tem_MIN = Tem_MAX;
+ 109   3                      }
+ 110   2                      if(KeyNum == 3)
+ 111   2                      {
+ 112   3                              Tem_MAX++;
+ 113   3                              if(Tem_MAX > 125) Tem_MAX = 125;
+ 114   3                              if(Tem_MAX < Tem_MIN) Tem_MAX = Tem_MIN;
+ 115   3                      }
+ 116   2                      if(KeyNum == 4)
+C51 COMPILER V9.60.7.0   MAIN                                                              09/04/2023 09:43:31 PAGE 3   
+
+ 117   2                      {
+ 118   3                              Tem_MAX--;
+ 119   3                              if(Tem_MAX < -55) Tem_MAX = -55;
+ 120   3                              if(Tem_MAX < Tem_MIN) Tem_MAX = Tem_MIN;
+ 121   3                      }
+ 122   2                      Buzzer1000Hz(100);
+ 123   2                      AT24C01_WriteByte(0, Tem_MAX);          //写入到At24C02中保存
+ 124   2                      Delay(5);
+ 125   2                      AT24C01_WriteByte(1, Tem_MIN);
+ 126   2                      Delay(5);
+ 127   2                      if(Temperature > Tem_MAX) 
+ 128   2                      {
+ 129   3                              LCD_ShowChar(1, 16, 'H');
+ 130   3                      }
+ 131   2                      if(Temperature < Tem_MIN) 
+ 132   2                      {
+ 133   3                              LCD_ShowChar(1, 16, 'L');
+ 134   3                      }
+ 135   2                      if(Temperature < Tem_MAX && Temperature > Tem_MIN) 
+ 136   2                      {
+ 137   3                              LCD_ShowString(1, 16, ' ');
+ 138   3                      }
+ 139   2              }
+ 140   1      }
+ 141          /**
+ 142          * @brief 越界判断
+ 143          * @param  无
+ 144          * @retval 无
+ 145          * @interpretation  描述
+ 146          */
+ 147          void Compare(void)
+ 148          {
+ 149   1              if(Temperature > Tem_MAX) 
+ 150   1              {
+ 151   2                      LCD_ShowChar(1, 16, 'H');
+ 152   2              }
+ 153   1              if(Temperature < Tem_MIN) 
+ 154   1              {
+ 155   2                      LCD_ShowChar(1, 16, 'L');
+ 156   2              }
+ 157   1              if(Temperature < Tem_MAX && Temperature > Tem_MIN) 
+ 158   1              {
+ 159   2                      LCD_ShowString(1, 16, ' ');
+ 160   2              }
+ 161   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    816    ----
+   CONSTANT SIZE    =     29    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      8       7
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

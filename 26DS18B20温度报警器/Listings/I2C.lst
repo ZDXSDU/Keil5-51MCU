@@ -1,0 +1,130 @@
+C51 COMPILER V9.60.7.0   I2C                                                               09/04/2023 08:19:08 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE I2C
+OBJECT MODULE PLACED IN .\Objects\I2C.obj
+COMPILER INVOKED BY: D:\Keil_v5\C51\BIN\C51.EXE I2C.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\I2C.l
+                    -st) OBJECT(.\Objects\I2C.obj)
+
+line level    source
+
+   1          /**
+   2           * @Author: ZDXSDU [ZDXSDU@qq.com]
+   3           * @Date: Aug. 19, 2023 11:45:36
+   4           * @LastEditors: ZDXSDU [ZDXSDU@qq.com]
+   5           * @LastEditTime: Aug. 19, 2023 14:39:02
+   6           * @FilePath: ./I2C.c
+   7           * @Description: 定义了I2C总线的6个时序
+   8           */
+   9          #include <REGX52.H>
+  10          sbit I2C_SCL = P2^1;
+  11          sbit I2C_SDA = P2^0;
+  12          /**
+  13          * @brief I2C时序-起始条件
+  14          * @param  无
+  15          * @retval 无
+  16          * @interpretation  SCL高电平期间，SDA从高电平切换到低电平
+  17          */
+  18          void I2C_Start(void)
+  19          {
+  20   1              // 这里先给SCL和SDA高电平是为了防止他们有在低电平的情况
+  21   1              I2C_SDA = 1;
+  22   1              I2C_SCL = 1;
+  23   1              I2C_SDA = 0;
+  24   1              I2C_SCL = 0;
+  25   1      }
+  26          /**
+  27          * @brief I2C时序-终止条件
+  28          * @param  无
+  29          * @retval 无
+  30          * @interpretation  SCL高电平期间，SDA从低电平切换到高电平
+  31          */
+  32          void I2C_Stop(void)
+  33          {
+  34   1              I2C_SDA = 0;
+  35   1              I2C_SCL = 1;
+  36   1              I2C_SDA = 1;
+  37   1      }
+  38          /**
+  39          * @brief I2C时序-发送一个字节
+  40          * @param  无
+  41          * @retval 无
+  42          * @interpretation  SCL低电平期间，主机将数据位依次放到SDA上（高位在前），然后拉
+             -高SCL，从机将在SCL高电平期间读取数据位
+  43          */
+  44          void I2C_SendByte(unsigned char byte)
+  45          {
+  46   1              unsigned char i;
+  47   1              for(i = 0; i < 8; i++)
+  48   1              {
+  49   2                      I2C_SDA = byte & (0x80 >> i); // 依次取出byte字节中的每一位数据
+  50   2                      I2C_SCL = 1;
+  51   2                      I2C_SCL = 0;
+  52   2              }
+  53   1      }
+C51 COMPILER V9.60.7.0   I2C                                                               09/04/2023 08:19:08 PAGE 2   
+
+  54          /**
+  55          * @brief  I2C时序-接收一个字节
+  56          * @param  无
+  57          * @retval unsigned char 接收到的一个字节数据
+  58          * @interpretation  SCL低电平期间，从机将数据位依次放到SDA上（高位在前），然后拉
+             -高SCL，主机将在SCL高电平期间读取数据位
+  59          */
+  60          unsigned char I2C_ReceiveByte(void)
+  61          {
+  62   1              unsigned char i, byte = 0x00;
+  63   1              I2C_SDA = 1; // 释放SDA
+  64   1              for(i = 0; i < 8; i++)
+  65   1              {
+  66   2                      I2C_SCL = 1;
+  67   2                      if(I2C_SDA) byte |= (0x80 >> i);
+  68   2                      I2C_SCL = 0;
+  69   2              }
+  70   1              return byte;
+  71   1      }
+  72          
+  73          /**
+  74          * @brief  I2C时序-发送应答
+  75          * @param  AckBit 应答位，0为应答，1为非应答
+  76          * @retval 无
+  77          * @interpretation 在接受完一个字节后，主机在下一时钟发送一位数据；bit类似于bool
+             -，只能存储一位
+  78          */
+  79          void I2C_SendAck(bit AckBit)
+  80          {
+  81   1              I2C_SDA = AckBit;
+  82   1              I2C_SCL = 1;
+  83   1              I2C_SCL = 0;
+  84   1      }
+  85          
+  86          /**
+  87          * @brief  I2C时序-接收应答
+  88          * @param  无
+  89          * @retval bit 接收到的应答位，0为应答，1为非应答
+  90          * @interpretation 在接受完一个字节后，主机在下一时钟发送一位数据；bit类似于bool
+             -，只能存储一位
+  91          */
+  92          bit I2C_ReceiveAck(void)
+  93          {
+  94   1              bit AckBit;
+  95   1              I2C_SDA = 1; // 释放SDA
+  96   1              I2C_SCL = 1;
+  97   1              AckBit = I2C_SDA;
+  98   1              I2C_SCL = 0;
+  99   1              return AckBit;
+ 100   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    109    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----       2
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

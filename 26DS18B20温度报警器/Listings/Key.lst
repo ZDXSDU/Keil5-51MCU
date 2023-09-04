@@ -1,0 +1,87 @@
+C51 COMPILER V9.60.7.0   KEY                                                               09/04/2023 08:13:48 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE KEY
+OBJECT MODULE PLACED IN .\Objects\Key.obj
+COMPILER INVOKED BY: D:\Keil_v5\C51\BIN\C51.EXE Key.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\Key.l
+                    -st) OBJECT(.\Objects\Key.obj)
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          unsigned char KeyNumber; // 用于定时器扫描独立按键使用
+   3          unsigned char Key_GetState(void);
+   4          /**
+   5          * @brief  获取独立按键键码
+   6          * @param  无
+   7          * @retval 按下按键的键码，范围：0~4，无按键按下时返回值为0
+   8          */
+   9          unsigned char Key(void)
+  10          {
+  11   1              unsigned char Temp = 0; // 由于在Key_Loop()内赋值的KeyNumber并不会自动清零，所以这里�
+             -�要一个临时变量来接收KeyNumber的值，并把KeyNumber清零后返回临时变量，由于临时变量既不�
+             -�静态变量又不是全局变量，他会在这个函数运行结束后回收
+  12   1              Temp = KeyNumber;
+  13   1              KeyNumber = 0;
+  14   1              return Temp;    
+  15   1      }
+  16          /**
+  17          * @brief 循环调用  用于定时器中断扫描独立按键 
+  18          * @param  无
+  19          * @retval 无
+  20          * @interpretation  在定时器Timer0中每隔一段时间（20MS）调用一下这个函数。如果使�
+             -�定时器中断来扫描案件，则应配合下方的Key_GetState函数一起食用
+  21          */
+  22          void Key_Loop(void)
+  23          {
+  24   1              // 这个地方会在main.c中的定时器Timer0中断函数内每隔20ms调用一次，20ms刚好把按�
+             -��的抖动给消除掉
+  25   1              static unsigned char NowState, LastState; // 定义两个标识位用来存储当前的状态和之前的
+             -状态
+  26   1              LastState = NowState; // 运行的时候用LastState接收NowState的至，以给NowState可以接受实�
+             -��扫描到的值
+  27   1              NowState = Key_GetState(); // 当前的状态等于现在读取出来的状态
+  28   1              if(NowState == 1 && LastState == 0) // 上次的标识位是按键1，这次的标识位是0，证明已�
+             -��松手了按键1
+  29   1                      KeyNumber = 1;
+  30   1              if(NowState == 2 && LastState == 0) // 上次的标识位是按键2，这次的标识位是0，证明已�
+             -��松手了按键2
+  31   1                      KeyNumber = 2;
+  32   1              if(NowState == 3 && LastState == 0) // 上次的标识位是按键3，这次的标识位是0，证明已�
+             -��松手了按键3
+  33   1                      KeyNumber = 3;
+  34   1              if(NowState == 4 && LastState == 0) // 上次的标识位是按键4，这次的标识位是0，证明已�
+             -��松手了按键4
+  35   1                      KeyNumber = 4;
+  36   1      }
+  37          /**
+  38          * @brief 获取此刻的按键状态
+  39          * @param  无
+  40          * @retval 无
+  41          * @interpretation  描述
+  42          */
+  43          unsigned char Key_GetState(void)
+  44          {
+C51 COMPILER V9.60.7.0   KEY                                                               09/04/2023 08:13:48 PAGE 2   
+
+  45   1              unsigned char KeyNumber=0;      
+  46   1              if(P3_1==0){KeyNumber=1;}
+  47   1              if(P3_0==0){KeyNumber=2;}
+  48   1              if(P3_2==0){KeyNumber=3;}
+  49   1              if(P3_3==0){KeyNumber=4;}       
+  50   1              return KeyNumber;
+  51   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     85    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      3    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
