@@ -1,4 +1,4 @@
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                    08/09/2023  08:45:07  PAGE 1
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                    09/05/2023  10:24:30  PAGE 1
 
 
 BL51 BANKED LINKER/LOCATER V6.22.4.0, INVOKED BY:
@@ -59,7 +59,7 @@ SYMBOL TABLE OF MODULE:  .\Objects\project (MAIN)
   ----------------------------------
 
   -------         MODULE        MAIN
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  08/09/2023  08:45:07  PAGE 2
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  09/05/2023  10:24:30  PAGE 2
 
 
   C:0000H         SYMBOL        _ICE_DUMMY_
@@ -77,56 +77,56 @@ SYMBOL TABLE OF MODULE:  .\Objects\project (MAIN)
   D:0005H         SYMBOL        i
   D:0004H         SYMBOL        j
   -------         ENDDO         
-  C:0146H         LINE#         9
-  C:0146H         LINE#         10
-  C:0146H         LINE#         12
-  C:0150H         LINE#         13
-  C:0150H         LINE#         14
-  C:0152H         LINE#         15
-  C:0154H         LINE#         17
-  C:0154H         LINE#         18
-  C:0156H         LINE#         19
-  C:0158H         LINE#         20
-  C:015AH         LINE#         21
+  C:0146H         LINE#         3
+  C:0146H         LINE#         4
+  C:0146H         LINE#         6
+  C:0150H         LINE#         7
+  C:0150H         LINE#         8
+  C:0152H         LINE#         9
+  C:0154H         LINE#         11
+  C:0154H         LINE#         12
+  C:0156H         LINE#         13
+  C:0158H         LINE#         14
+  C:015AH         LINE#         15
   -------         ENDPROC       _DELAY
   -------         PROC          _NIXIE
   D:0007H         SYMBOL        Location
   D:0004H         SYMBOL        Number
-  C:008FH         LINE#         24
-  C:008FH         LINE#         25
-  C:008FH         LINE#         26
-  C:00BCH         LINE#         27
-  C:00BCH         LINE#         28
-  C:00C0H         LINE#         29
-  C:00C4H         LINE#         30
-  C:00C8H         LINE#         31
-  C:00CCH         LINE#         32
-  C:00D4H         LINE#         33
-  C:00DCH         LINE#         34
-  C:00E4H         LINE#         35
-  C:00EAH         LINE#         36
-  C:00EAH         LINE#         37
-  C:00F1H         LINE#         38
-  C:00F8H         LINE#         39
-  C:00FBH         LINE#         40
+  C:008FH         LINE#         16
+  C:008FH         LINE#         17
+  C:008FH         LINE#         18
+  C:00BCH         LINE#         19
+  C:00BCH         LINE#         20
+  C:00C0H         LINE#         21
+  C:00C4H         LINE#         22
+  C:00C8H         LINE#         23
+  C:00CCH         LINE#         24
+  C:00D4H         LINE#         25
+  C:00DCH         LINE#         26
+  C:00E4H         LINE#         27
+  C:00EAH         LINE#         28
+  C:00EAH         LINE#         29
+  C:00F1H         LINE#         30
+  C:00F8H         LINE#         31
+  C:00FBH         LINE#         32
   -------         ENDPROC       _NIXIE
   -------         PROC          MAIN
-  C:00FCH         LINE#         49
-  C:00FCH         LINE#         50
-  C:00FCH         LINE#         51
-  C:00FCH         LINE#         52
-  C:00FCH         LINE#         53
-  C:0105H         LINE#         54
-  C:010EH         LINE#         55
-  C:0117H         LINE#         56
-BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  08/09/2023  08:45:07  PAGE 3
+  C:00FCH         LINE#         33
+  C:00FCH         LINE#         34
+  C:00FCH         LINE#         35
+  C:00FCH         LINE#         36
+  C:00FCH         LINE#         37
+  C:0105H         LINE#         38
+  C:010EH         LINE#         39
+  C:0117H         LINE#         40
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                  09/05/2023  10:24:30  PAGE 3
 
 
-  C:0120H         LINE#         57
-  C:0129H         LINE#         58
-  C:0132H         LINE#         59
-  C:013BH         LINE#         60
-  C:0144H         LINE#         62
+  C:0120H         LINE#         41
+  C:0129H         LINE#         42
+  C:0132H         LINE#         43
+  C:013BH         LINE#         44
+  C:0144H         LINE#         45
   -------         ENDPROC       MAIN
   -------         ENDMOD        MAIN
 

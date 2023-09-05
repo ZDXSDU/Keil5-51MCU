@@ -1,0 +1,61 @@
+C51 COMPILER V9.60.7.0   DS18B20                                                           09/01/2023 15:30:43 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE DS18B20
+OBJECT MODULE PLACED IN .\Objects\DS18B20.obj
+COMPILER INVOKED BY: D:\Keil_v5\C51\BIN\C51.EXE DS18B20.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\D
+                    -S18B20.lst) OBJECT(.\Objects\DS18B20.obj)
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          #include "OneWire.h"
+   3          #define DS18B20_Skip_ROM                        0xCC
+   4          #define DS18B20_ConvertTemperature  0x44
+   5          #define DS18B20_ReadScratchpad          0xBE
+   6          /**
+   7          * @brief 发送温度转换的命令的数据帧
+   8          * @param  无
+   9          * @retval 无
+  10          * @interpretation  描述
+  11          */
+  12          void DS18B20_ConvertT(void)
+  13          {
+  14   1              OneWire_Init();
+  15   1              OneWire_SendByte(DS18B20_Skip_ROM); // 发送跳过ROM指令
+  16   1              OneWire_SendByte(DS18B20_ConvertTemperature); // 发送温度转换指令
+  17   1      }
+  18          /**
+  19          * @brief 接收DS18B02传回的数据
+  20          * @param  无
+  21          * @retval 无
+  22          * @interpretation  描述
+  23          */
+  24          float DS18B20_ReadT(void)
+  25          {
+  26   1              unsigned char T_LSB, T_MSB; // 接收从DS18B20中返回的温度
+  27   1              int temp; // 中间变量
+  28   1              float Temperature; // 最终输出的温度，有符号的浮点数
+  29   1              OneWire_Init();
+  30   1              OneWire_SendByte(DS18B20_Skip_ROM); // 发送跳过ROM指令
+  31   1              OneWire_SendByte(DS18B20_ReadScratchpad); // 发送读暂存器指令
+  32   1              T_LSB = OneWire_ReadBtye(); // 先读最低有效数字
+  33   1              T_MSB = OneWire_ReadBtye();
+  34   1              temp = (T_MSB << 8) | T_LSB;
+  35   1              Temperature = temp / 16.0;
+  36   1              return Temperature;
+  37   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     56    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       1
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

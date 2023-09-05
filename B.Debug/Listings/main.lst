@@ -1,0 +1,62 @@
+C51 COMPILER V9.60.7.0   MAIN                                                              09/02/2023 14:55:03 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: D:\Keil_v5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\main
+                    -.lst) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          #include "DS18B20.h"
+   3          #include "Delay.h"
+   4          #include "LCD1602.h"
+   5          #include "OneWire.h"
+   6          float Temperature;
+   7          void main(void)
+   8          {
+   9   1      
+  10   1              LCD_Init();
+  11   1              LCD_ShowString(1, 1, "temperature:");
+  12   1              while(1)
+  13   1              {
+  14   2                      DS18B20_ConvertT();
+  15   2                      Temperature = DS18B20_ReadT();
+  16   2                      if(Temperature < 0) 
+  17   2                      {
+  18   3                              LCD_ShowChar(2, 1, '-');
+  19   3                              Temperature = -Temperature;
+  20   3                      }
+  21   2                      else
+  22   2                      {
+  23   3                              LCD_ShowChar(2, 1, '+');
+  24   3                      }
+  25   2                      // 将温度显示在LCD屏幕上的这一过程比较绕，因为LCD1602不具备显示浮点数和负�
+             -��的能力；
+  26   2                      // 首先判断当前的温度是否是负数，如果是，就显示一个‘-’字符，否则显示�
+             -��+’
+  27   2                      // 之后显示温度的整数部分，可以直接调用LCD_ShowNum(),自动舍去浮点部分
+  28   2                      // 再显示一个‘.’
+  29   2                      // 再显示温度的小数部分，思路是先乘以一万，然后强制类型转换成long，之后�
+             -��对long类型的值和一万取余，得出小数部分并显示
+  30   2                      LCD_ShowNum(2, 2, Temperature, 3);
+  31   2                      LCD_ShowChar(2, 5, '.');
+  32   2                      LCD_ShowNum(2, 6, (unsigned long)(Temperature * 10000) % 10000, 4);
+  33   2                      Delay(1000);
+  34   2              }
+  35   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    173    ----
+   CONSTANT SIZE    =     13    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      4    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
