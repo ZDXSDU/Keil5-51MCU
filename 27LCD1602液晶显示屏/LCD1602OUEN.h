@@ -6,4 +6,5 @@ void LCD_ShowString(unsigned char Row, unsigned char Column, unsigned char *Stri
 void LCD_ShowUnsignedDECNumber(unsigned char Row, unsigned char Column, unsigned int Number, unsigned char Length); // LCD显示无符号整数
 void LCD_ShowSignedDECNumber(unsigned char Row, unsigned char Column, unsigned int Number, unsigned char Length); // LCD显示有符号整数
 void LCD_ShowHexNum(unsigned char Row, unsigned char Column, unsigned int Number, unsigned char Length); // LCD显示十六进制数字
+void LCD_ShowBinNumber(unsigned char Row, unsigned char Column, unsigned int Number, unsigned char Length); // LCD显示二进制数字
 #endif

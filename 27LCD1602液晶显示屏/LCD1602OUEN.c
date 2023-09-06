@@ -15,6 +15,7 @@ void LCD_ShowString(unsigned char Row, unsigned char Column, unsigned char *Stri
 void LCD_ShowUnsignedDECNumber(unsigned char Row, unsigned char Column, unsigned int Number, unsigned char Length); // LCD显示无符号十进制整数
 void LCD_ShowSignedDECNumber(unsigned char Row, unsigned char Column, unsigned int Number, unsigned char Length); // LCD显示有符号十进制整数
 void LCD_ShowHexNum(unsigned char Row, unsigned char Column, unsigned int Number, unsigned char Length); // LCD显示十六进制数字
+void LCD_ShowBinNumber(unsigned char Row, unsigned char Column, unsigned int Number, unsigned char Length); // LCD显示二进制数字
 void LCD_WriteCommand(unsigned char Command)
 {
 	LCD_RS = 0;
@@ -115,7 +116,16 @@ void LCD_ShowHexNum(unsigned char Row, unsigned char Column, unsigned int Number
 	{
 		SingleNumber = (Number / LCD_Power(16, i -1)) % 16;
 		// 将 11 12 13 14 15 转换成A B C D E F
-		if(SingleNumber > 9) LCD_WriteData(SingleNumber + 'A');
+		if(SingleNumber > 9) LCD_WriteData(SingleNumber - 10 + 'A');
 		else LCD_WriteData(SingleNumber + 0x30);		
+	}
+}
+void LCD_ShowBinNumber(unsigned char Row, unsigned char Column, unsigned int Number, unsigned char Length)
+{
+	unsigned char i;
+	LCD_SetCursor(Row, Column);
+	for(i = Length; i > 0; i--)
+	{
+		LCD_WriteData('0' + (Number / LCD_Power(2, i - 1)) % 2);
 	}
 }

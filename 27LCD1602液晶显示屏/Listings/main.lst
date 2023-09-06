@@ -1,4 +1,4 @@
-C51 COMPILER V9.60.7.0   MAIN                                                              09/05/2023 18:02:45 PAGE 1   
+C51 COMPILER V9.60.7.0   MAIN                                                              09/06/2023 11:19:42 PAGE 1   
 
 
 C51 COMPILER V9.60.7.0, COMPILATION OF MODULE MAIN
@@ -18,15 +18,18 @@ line level    source
    8   1              LCD_ShowUnsignedDECNumber(1, 7, 543, 4); // 0543
    9   1              LCD_ShowSignedDECNumber(1, 12, -7193, 4); // -7193
   10   1              LCD_ShowHexNum(2, 1, 220, 2); // DC
-  11   1              while(1)
-  12   1              {
-  13   2                      
-  14   2              }
-  15   1      }
+  11   1              LCD_ShowBinNumber(2, 4, 106, 8); // 0110 1010
+  12   1              LCD_ShowChar(2, 13, 0xDF); // ℃
+  13   1              LCD_ShowChar(2, 14, 0x43); // ℃
+  14   1              while(1)
+  15   1              {
+  16   2                      
+  17   2              }
+  18   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     69    ----
+   CODE SIZE        =    101    ----
    CONSTANT SIZE    =      4    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
