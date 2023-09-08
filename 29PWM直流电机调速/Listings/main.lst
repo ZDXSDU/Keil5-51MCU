@@ -1,4 +1,4 @@
-C51 COMPILER V9.60.7.0   MAIN                                                              09/06/2023 17:58:04 PAGE 1   
+C51 COMPILER V9.60.7.0   MAIN                                                              09/08/2023 10:36:04 PAGE 1   
 
 
 C51 COMPILER V9.60.7.0, COMPILATION OF MODULE MAIN
@@ -12,34 +12,48 @@ line level    source
    2          #include "Timer0.h"
    3          #include "Key.h"
    4          #include "Delay.h"
-   5          sbit Motor = P1^0;
-   6          void main(void)
-   7          {
-   8   1              while(1)
-   9   1              {
-  10   2                      
-  11   2              }
-  12   1      }
-  13          void Timer0_Routine() interrupt 1
-  14          {
-  15   1              static unsigned int T0Count;
-  16   1              TL0 = 0x18;             //设置定时初值
-  17   1              TH0 = 0xFC;             //设置定时初值
-  18   1              T0Count++;
-  19   1              if(T0Count>=20)
-  20   1              {
-  21   2                      T0Count=0;
-  22   2                      
-  23   2              }
-  24   1      }
+   5          #include "Nixie.h"
+   6          #include "PWM.h"
+   7          sbit Motor = P1^0;
+   8          unsigned char Counter, Compare; // 定义计数器和比较值
+   9          unsigned char KeyNum, Speed; // 按键键码和电机转速
+  10          void main(void)
+  11          {
+  12   1              Timer0_PWM_Init();
+  13   1              while(1)
+  14   1              {
+  15   2                      KeyNum = Key();
+  16   2                      if(KeyNum == 1)
+  17   2                      {
+  18   3                              Speed++;
+  19   3                              Speed %= 4;
+  20   3                              if(Speed == 0) Compare = 0;
+  21   3                              if(Speed == 1) Compare = 5;
+  22   3                              if(Speed == 2) Compare = 40;
+  23   3                              if(Speed == 3) Compare = 100;
+  24   3                      }
+  25   2                      Nixie(1, Speed);
+  26   2              }
+  27   1      }
+  28          void Timer0_Routine() interrupt 1
+  29          {       
+  30   1              TL0 = 0xA4;
+  31   1              TH0 = 0xFF;
+  32   1              Counter++;
+  33   1              Counter %= 100;
+  34   1              if(Counter < Compare)   
+  35   1                      Motor = 1;      
+  36   1              else 
+  37   1                      Motor = 0;
+  38   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     40    ----
+   CODE SIZE        =    104    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =      2    ----
+   DATA SIZE        =      4    ----
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.
