@@ -16,11 +16,12 @@ void main(void)
 		if(KeyNum == 1)
 		{
 			Speed++;
-			Speed %= 4;
+			Speed %= 5;
 			if(Speed == 0) Compare = 0;
-			if(Speed == 1) Compare = 5;
-			if(Speed == 2) Compare = 40;
-			if(Speed == 3) Compare = 100;
+			if(Speed == 1) Compare = 25;
+			if(Speed == 2) Compare = 50;
+			if(Speed == 3) Compare = 75;
+			if(Speed == 4) Compare = 100;
 		}
 		Nixie(1, Speed);
 	}

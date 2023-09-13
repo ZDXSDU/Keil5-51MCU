@@ -1,4 +1,4 @@
-C51 COMPILER V9.60.7.0   MAIN                                                              09/08/2023 10:36:04 PAGE 1   
+C51 COMPILER V9.60.7.0   MAIN                                                              09/08/2023 11:03:43 PAGE 1   
 
 
 C51 COMPILER V9.60.7.0, COMPILATION OF MODULE MAIN
@@ -26,30 +26,31 @@ line level    source
   16   2                      if(KeyNum == 1)
   17   2                      {
   18   3                              Speed++;
-  19   3                              Speed %= 4;
+  19   3                              Speed %= 5;
   20   3                              if(Speed == 0) Compare = 0;
-  21   3                              if(Speed == 1) Compare = 5;
-  22   3                              if(Speed == 2) Compare = 40;
-  23   3                              if(Speed == 3) Compare = 100;
-  24   3                      }
-  25   2                      Nixie(1, Speed);
-  26   2              }
-  27   1      }
-  28          void Timer0_Routine() interrupt 1
-  29          {       
-  30   1              TL0 = 0xA4;
-  31   1              TH0 = 0xFF;
-  32   1              Counter++;
-  33   1              Counter %= 100;
-  34   1              if(Counter < Compare)   
-  35   1                      Motor = 1;      
-  36   1              else 
-  37   1                      Motor = 0;
-  38   1      }
+  21   3                              if(Speed == 1) Compare = 25;
+  22   3                              if(Speed == 2) Compare = 50;
+  23   3                              if(Speed == 3) Compare = 75;
+  24   3                              if(Speed == 4) Compare = 100;
+  25   3                      }
+  26   2                      Nixie(1, Speed);
+  27   2              }
+  28   1      }
+  29          void Timer0_Routine() interrupt 1
+  30          {       
+  31   1              TL0 = 0xA4;
+  32   1              TH0 = 0xFF;
+  33   1              Counter++;
+  34   1              Counter %= 100;
+  35   1              if(Counter < Compare)   
+  36   1                      Motor = 1;      
+  37   1              else 
+  38   1                      Motor = 0;
+  39   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    104    ----
+   CODE SIZE        =    118    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
