@@ -12,7 +12,7 @@ sbit XPT2046_Din = P3^4; // 输入
 */
 unsigned int XPT2046_Read(unsigned char Command)
 {
-	unsigned int AD_Value;
+	unsigned int AD_Value = 0;
 	unsigned char i;
 	XPT2046_DCLK = 0;
 	XPT2046_CS = 0;
@@ -31,5 +31,10 @@ unsigned int XPT2046_Read(unsigned char Command)
 			AD_Value |= (0x8000 >> i); 
 	}
 	XPT2046_CS = 1;
-	return AD_Value;
+	if(Command & 0x08)
+		// 八位控制字
+		return AD_Value >> 8;
+	else
+		// 十二位控制字
+		return AD_Value >> 4;
 }

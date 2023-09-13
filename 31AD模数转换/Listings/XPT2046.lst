@@ -1,4 +1,4 @@
-C51 COMPILER V9.60.7.0   XPT2046                                                           09/08/2023 18:01:16 PAGE 1   
+C51 COMPILER V9.60.7.0   XPT2046                                                           09/13/2023 10:44:47 PAGE 1   
 
 
 C51 COMPILER V9.60.7.0, COMPILATION OF MODULE XPT2046
@@ -22,7 +22,7 @@ line level    source
   12          */
   13          unsigned int XPT2046_Read(unsigned char Command)
   14          {
-  15   1              unsigned int AD_Value;
+  15   1              unsigned int AD_Value = 0;
   16   1              unsigned char i;
   17   1              XPT2046_DCLK = 0;
   18   1              XPT2046_CS = 0;
@@ -41,16 +41,21 @@ line level    source
   31   2                              AD_Value |= (0x8000 >> i); 
   32   2              }
   33   1              XPT2046_CS = 1;
-  34   1              return AD_Value;
-  35   1      }
+  34   1              if(Command & 0x08)
+  35   1                      // 八位控制字
+  36   1                      return AD_Value >> 8;
+  37   1              else
+  38   1                      // 十二位控制字
+  39   1                      return AD_Value >> 4;
+  40   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     91    ----
+   CODE SIZE        =    117    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =   ----       2
+   DATA SIZE        =   ----       3
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.

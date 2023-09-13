@@ -1,4 +1,4 @@
-C51 COMPILER V9.60.7.0   MAIN                                                              09/08/2023 17:39:56 PAGE 1   
+C51 COMPILER V9.60.7.0   MAIN                                                              09/13/2023 11:07:33 PAGE 1   
 
 
 C51 COMPILER V9.60.7.0, COMPILATION OF MODULE MAIN
@@ -11,23 +11,33 @@ line level    source
    1          #include <STC89C5xRC.H>
    2          #include "Delay.h"
    3          #include "LCD1602.h"
-   4          void main(void)
-   5          {
-   6   1              LCD_Init();
-   7   1              LCD_ShowString(1, 1, "ADB:");
-   8   1              while(1)
-   9   1              {
-  10   2                      
-  11   2              }
-  12   1      }
+   4          #include "XPT2046.h"
+   5          unsigned int AD_Value;
+   6          void main(void)
+   7          {
+   8   1              LCD_Init();
+   9   1              LCD_ShowString(1, 1, "ADJ NTC GR  PT");
+  10   1              while(1)
+  11   1              {
+  12   2                      AD_Value = XPT2046_Read(XPT2046_XP_8);
+  13   2                      LCD_ShowNum(2, 1, AD_Value, 3);         
+  14   2                      AD_Value = XPT2046_Read(XPT2046_YP_8);  //读取AIN1，热敏电阻
+  15   2                      LCD_ShowNum(2, 5, AD_Value, 3);
+  16   2                      AD_Value=XPT2046_Read(XPT2046_VBAT_8);  //读取AIN2，光敏电阻
+  17   2                      LCD_ShowNum(2, 9, AD_Value, 3);
+  18   2                      AD_Value=XPT2046_Read(XPT2046_AUX_8);   //读取AIN3(AUX)，PT1000
+  19   2                      LCD_ShowNum(2, 13, AD_Value, 3);
+  20   2                      Delay(100);
+  21   2              }
+  22   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     18    ----
-   CONSTANT SIZE    =      5    ----
+   CODE SIZE        =    117    ----
+   CONSTANT SIZE    =     15    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =   ----    ----
+   DATA SIZE        =      2    ----
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.
