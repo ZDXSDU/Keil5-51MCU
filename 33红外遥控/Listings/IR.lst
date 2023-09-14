@@ -1,0 +1,157 @@
+C51 COMPILER V9.60.7.0   IR                                                                09/14/2023 16:00:28 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE IR
+OBJECT MODULE PLACED IN .\Objects\IR.obj
+COMPILER INVOKED BY: D:\Keil_v5\C51\BIN\C51.EXE IR.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\IR.lst
+                    -) OBJECT(.\Objects\IR.obj)
+
+line level    source
+
+   1          #include <STC89C5xRC.H>
+   2          #include "Timer0.h"
+   3          #include "Int0.h"
+   4          unsigned int IR_Time; // 计时时间
+   5          unsigned char IR_Status; // 红外的状态机；【0空闲，1接收到start信号，2接收数据并解�
+             -��】
+   6          unsigned char IR_Data[4]; // 使用char类型的4长度数组来存储红外接收头接收到的数据，
+             -这里不适用long类型的原因是因为<<和>>只能操作16位以内的数据，对于32位的long类型操作左�
+             -�右移会出现问题
+   7          unsigned char IR_pData; // 定义当前读到了第几位，如果读满32位，就认为接受结束
+   8          unsigned char IR_DataFlag; // 数据接收完毕标识位
+   9          unsigned char IR_RepeatFlag; // 重发标识
+  10          unsigned char IR_Address; // 红外接收到的地址码
+  11          unsigned char IR_Command; // 红外接收到的命令字
+  12          void IR_Init(void)
+  13          {
+  14   1              Timer0_Init();
+  15   1              Int0_Init();
+  16   1      }
+  17          void Int0_Rountine(void)  interrupt 0
+  18          {
+  19   1              switch(IR_Status)
+  20   1              {
+  21   2                      case 0: 
+  22   2                      {
+  23   3                              Timer0_SetCounter(0);
+  24   3                              Timer0_Run(1);
+  25   3                              IR_Status = 1;
+  26   3                              break;
+  27   3                      }
+  28   2                      case 1:
+  29   2                      {
+  30   3                              IR_Time = Timer0_GetCounter();
+  31   3                              Timer0_SetCounter(0);
+  32   3                              if(IR_Time >= (9000 + 4500) - 500 && IR_Time <= (9000 + 4500) + 500)
+  33   3                              { // Start 信号
+  34   4                                      IR_Status = 2;
+  35   4                              }
+  36   3                              else if(IR_Time >= (9000 + 2250) - 500 && IR_Time <= (9000 + 2250) + 500)
+  37   3                              { // Repeat 信号
+  38   4                                      IR_RepeatFlag = 1;
+  39   4                                      Timer0_Run(0);
+  40   4                                      IR_Status = 0;
+  41   4                              }
+  42   3                              else
+  43   3                              {
+  44   4                                      IR_Status = 1;
+  45   4                              }
+  46   3                              break;
+  47   3                      }
+  48   2                      case 2:
+  49   2                      {
+  50   3                              IR_Time = Timer0_GetCounter();
+  51   3                              Timer0_SetCounter(0);
+C51 COMPILER V9.60.7.0   IR                                                                09/14/2023 16:00:28 PAGE 2   
+
+  52   3                              if(IR_Time >= (560 + 560) - 500 && IR_Time <= (560 + 560) + 500)
+  53   3                              { // Logical"0"
+  54   4                                      IR_Data[IR_pData / 8] &= ~(0x01 << (IR_pData % 8));
+  55   4                                      IR_pData++;
+  56   4                              }
+  57   3                              else if(IR_Time >= (560 + 1690) -500 && IR_Time <= (560 + 1690) + 500)
+  58   3                              { // Logical"1"
+  59   4                                      IR_Data[IR_pData / 8] |= 0x01 << (IR_pData % 8);
+  60   4                                      IR_pData++;
+  61   4                              }
+  62   3                              else
+  63   3                              { // Error
+  64   4                                      IR_pData = 0;
+  65   4                                      IR_Status = 1;
+  66   4                              }
+  67   3                              if(IR_pData >= 32)
+  68   3                              { // 
+  69   4                                      IR_pData = 0;
+  70   4                                      if((IR_Data[0] == ~IR_Data[1]) &&(IR_Data[2] == ~IR_Data[3]))
+  71   4                                      {                                       
+  72   5                                              IR_Address = IR_Data[0];
+  73   5                                              IR_Command = IR_Data[2];
+  74   5                                              IR_DataFlag = 1;
+  75   5                                      }
+  76   4                                      Timer0_Run(0);
+  77   4                                      IR_Status = 0;
+  78   4                              }
+  79   3                      }
+  80   2                      default:
+  81   2                      { 
+  82   3                              break;
+  83   3                      }
+  84   2              }
+  85   1      }
+  86          unsigned char IR_GetDataFalg(void)
+  87          {
+  88   1              if(IR_DataFlag)
+  89   1              {
+  90   2                      IR_DataFlag = 0;
+  91   2                      return 1;
+  92   2              }
+  93   1              else
+  94   1              {
+  95   2                      return 0;
+  96   2              }
+  97   1      }
+  98          unsigned char IR_GetRepeatFlag(void)
+  99          {
+ 100   1              if(IR_RepeatFlag)
+ 101   1              {
+ 102   2                      IR_RepeatFlag = 0;
+ 103   2                      return 1;
+ 104   2              }
+ 105   1              else
+ 106   1              {
+ 107   2                      return 0;
+ 108   2              }
+ 109   1      }
+ 110          unsigned char IR_GetAddress(void)
+ 111          {
+ 112   1              return IR_Address;
+ 113   1      }
+C51 COMPILER V9.60.7.0   IR                                                                09/14/2023 16:00:28 PAGE 3   
+
+ 114          unsigned char IR_GetCommand(void)
+ 115          {
+ 116   1              return IR_Command;
+ 117   1      }
+ 118          /*
+ 119          外部中断Int0设置为下降沿触发，如果他检测到了下降沿并进入了中断函数，就开
+             -启计时器同时将红外状态机的状态改为1，
+ 120          下次下降沿触发时，拿到计时器的值，并让计时器重新开始计时，同时判断计时�
+             -��的值是不是在start时间上下500us的波动范围内，如果是，我们就认为接收机已经接收到了sta
+             -rt信号，并将红外状态机的状态修改为2；如果时间是在Repeat的时间上下500us内，则认为接收�
+             -��了重发信号 同时状态机修改为0，重发状态标识置为1,停止计时器；如果都不是，那就认为
+             -接收头接收到了错误的数据，将接收标识位置为1，重新接收
+ 121          */
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    369    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     12    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
