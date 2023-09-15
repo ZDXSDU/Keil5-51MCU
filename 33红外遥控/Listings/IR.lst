@@ -1,4 +1,4 @@
-C51 COMPILER V9.60.7.0   IR                                                                09/14/2023 16:00:28 PAGE 1   
+C51 COMPILER V9.60.7.0   IR                                                                09/15/2023 08:23:18 PAGE 1   
 
 
 C51 COMPILER V9.60.7.0, COMPILATION OF MODULE IR
@@ -62,7 +62,7 @@ line level    source
   49   2                      {
   50   3                              IR_Time = Timer0_GetCounter();
   51   3                              Timer0_SetCounter(0);
-C51 COMPILER V9.60.7.0   IR                                                                09/14/2023 16:00:28 PAGE 2   
+C51 COMPILER V9.60.7.0   IR                                                                09/15/2023 08:23:18 PAGE 2   
 
   52   3                              if(IR_Time >= (560 + 560) - 500 && IR_Time <= (560 + 560) + 500)
   53   3                              { // Logical"0"
@@ -126,7 +126,7 @@ line level    source
  111          {
  112   1              return IR_Address;
  113   1      }
-C51 COMPILER V9.60.7.0   IR                                                                09/14/2023 16:00:28 PAGE 3   
+C51 COMPILER V9.60.7.0   IR                                                                09/15/2023 08:23:18 PAGE 3   
 
  114          unsigned char IR_GetCommand(void)
  115          {

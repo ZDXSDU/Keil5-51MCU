@@ -1,0 +1,70 @@
+C51 COMPILER V9.60.7.0   MAIN                                                              09/15/2023 09:03:31 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: D:\Keil_v5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\main
+                    -.lst) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include <STC89C5xRC.H>
+   2          #include "Nixie.h"
+   3          #include "IR.h"
+   4          #include "Motor.h"
+   5          unsigned char ICommand, DisplayNum;
+   6          void main(void)
+   7          {
+   8   1              Motor_Init();
+   9   1              IR_Init();
+  10   1              while(1)
+  11   1              {
+  12   2                      if(IR_GetDataFalg())
+  13   2                      {
+  14   3                              ICommand = IR_GetCommand();
+  15   3                              if(ICommand == IRRC_0) 
+  16   3                              {
+  17   4                                      Motor_SetSpeed(0);
+  18   4                                      DisplayNum = 0;
+  19   4                              }
+  20   3                              if(ICommand == IRRC_1)
+  21   3                              {
+  22   4                                      Motor_SetSpeed(25);
+  23   4                                      DisplayNum = 1;
+  24   4                              }
+  25   3                              if(ICommand == IRRC_2) 
+  26   3                              {
+  27   4                                      Motor_SetSpeed(50);
+  28   4                                      DisplayNum = 2;
+  29   4                              }
+  30   3                              if(ICommand == IRRC_3)
+  31   3                              {
+  32   4                                      Motor_SetSpeed(75);
+  33   4                                      DisplayNum = 3;
+  34   4                              }
+  35   3                              if(ICommand == IRRC_4)
+  36   3                              {
+  37   4                                      Motor_SetSpeed(100);
+  38   4                                      DisplayNum = 4;
+  39   4                              }
+  40   3                      }
+  41   2                      Nixie(1, DisplayNum);
+  42   2                      Nixie(2, 23456);
+  43   2              }
+  44   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    103    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      2    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+C51 COMPILER V9.60.7.0   MAIN                                                              09/15/2023 09:03:31 PAGE 2   
+
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

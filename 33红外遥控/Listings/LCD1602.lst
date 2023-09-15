@@ -1,4 +1,4 @@
-C51 COMPILER V9.60.7.0   LCD1602                                                           09/14/2023 10:34:18 PAGE 1   
+C51 COMPILER V9.60.7.0   LCD1602                                                           09/15/2023 08:23:18 PAGE 1   
 
 
 C51 COMPILER V9.60.7.0, COMPILATION OF MODULE LCD1602
@@ -62,7 +62,7 @@ line level    source
   52   1              LCD_WriteCommand(0x06);
   53   1              LCD_WriteCommand(0x01);
   54   1      }
-C51 COMPILER V9.60.7.0   LCD1602                                                           09/14/2023 10:34:18 PAGE 2   
+C51 COMPILER V9.60.7.0   LCD1602                                                           09/15/2023 08:23:18 PAGE 2   
 
   55          void LCD_ShowChar(unsigned char Line, unsigned char Column, char Char)
   56          {
@@ -126,7 +126,7 @@ line level    source
  114   1              {
  115   2                      SingleNumber = Number / LCD_Pow(16, i - 1) % 16;
  116   2                      if(SingleNumber < 10)
-C51 COMPILER V9.60.7.0   LCD1602                                                           09/14/2023 10:34:18 PAGE 3   
+C51 COMPILER V9.60.7.0   LCD1602                                                           09/15/2023 08:23:18 PAGE 3   
 
  117   2                      {
  118   3                              LCD_WriteData(SingleNumber + '0');
